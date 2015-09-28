@@ -1,15 +1,15 @@
 # Restrict Content by Role
 
-Restrict users with certain User Roles from accessing certain pages and sub-pages within the WordPress Dashboard (WP Admin).
+Restrict users with certain User Roles from accessing certain peices of content and sub content within the WordPress Dashboard (WP Admin).
 
 ## About
 
-If you have a WordPress website with multiple users and several User Roles defined, and you wish to prevent certain User Roles from accessing certain pages (and sub-pages) within `wp-admin`, then this plugin is for you.
+If you have a WordPress website with multiple users and several User Roles defined, and you wish to prevent certain User Roles from accessing certain peices of contetn (and sub-content) within `wp-admin`, then this plugin is for you.
 
 The plugin provides the following functionality:
 
-- An options screen, that lets you:
- -
+- WIP
+ - WIP
 
 
 ## Installation
