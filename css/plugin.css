@@ -1,0 +1,59 @@
+/* Meta Box Styles */
+
+#mkdo_rcbr .field {
+	margin-bottom: 30px;
+	display: block;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+#mkdo_rcbr .field-override-parent-permissions {
+	background-color: #FAFAFA;
+	padding:12px;
+	border: 1px solid #DDD;
+	margin-top:12px;
+}
+
+#mkdo_rcbr .field:last-child {
+	border: none;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+#mkdo_rcbr .field-title {
+	font-weight: bold;
+}
+#mkdo_rcbr .field-description {
+	color: #aaa;
+	font-style: italic;
+	max-width: 800px;
+}
+
+/* Column Styles */
+
+#mkdo_rcbr_access {
+	width: 50px;
+}
+.dashicons-before.icon-large.dashicons-unlock:before {
+	font-size: 18px !important;
+}
+.dashicons-before.icon-large:before {
+	font-size: 20px !important;
+}
+.dashicons-before.icon-small.dashicons-unlock:before {
+	font-size: 14px !important;
+}
+.dashicons-before.icon-small:before {
+	font-size: 16px !important;
+}
+.dashicons-before.icon-right:before {
+	margin-top: 7px;
+	margin-left: -15px;
+	color: #aaa !important;
+}
+.dashicons-before.icon-muted:before {
+	color: #EFEFEF !important;
+}
+.dashicons-before.icon-dark:before {
+	color: #333 !important;
+}
