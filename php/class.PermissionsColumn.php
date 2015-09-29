@@ -41,7 +41,7 @@ class PermissionsColumn {
 				if ( 'public' == $mkdo_rcbr_override ) {
 					$icon_rendered = true;
 					?>
-						<i class="dashicons-before dashicons-unlock icon-large"></i>
+						<i class="dashicons-before dashicons-unlock dashicon-large"></i>
 						<span class="screen-reader-text">
 							<?php esc_html_e( 'Public Access to Content', $this->text_domain );?>
 						</span>
@@ -53,7 +53,7 @@ class PermissionsColumn {
 					if ( 'content' == $mkdo_rcbr_restrict_sub_content ) {
 						$icon_rendered = true;
 						?>
-							<i class="dashicons-before dashicons-lock icon-large"></i>
+							<i class="dashicons-before dashicons-lock dashicon-large"></i>
 							<span class="screen-reader-text">
 								<?php esc_html_e( 'Restricted Access to Content', $this->text_domain );?>
 							</span>
@@ -62,8 +62,8 @@ class PermissionsColumn {
 					} else if ( 'all' == $mkdo_rcbr_restrict_sub_content ) {
 						$icon_rendered = true;
 						?>
-							<i class="dashicons-before dashicons-lock icon-large"></i>
-							<i class="dashicons-before dashicons-lock icon-small icon-right"></i>
+							<i class="dashicons-before dashicons-lock dashicon-large"></i>
+							<i class="dashicons-before dashicons-lock dashicon-small dashicon-right"></i>
 							<span class="screen-reader-text">
 								<?php esc_html_e( 'Restricted Access to Content and Sub Content', $this->text_domain );?>
 							</span>
@@ -71,8 +71,8 @@ class PermissionsColumn {
 					} else if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) {
 						$icon_rendered = true;
 						?>
-							<i class="dashicons-before dashicons-unlock icon-large"></i>
-							<i class="dashicons-before dashicons-lock icon-small icon-right"></i>
+							<i class="dashicons-before dashicons-unlock dashicon-large"></i>
+							<i class="dashicons-before dashicons-lock dashicon-small dashicon-right"></i>
 							<span class="screen-reader-text">
 								<?php esc_html_e( 'Restricted Access to Sub Content Only', $this->text_domain );?>
 							</span>
@@ -99,8 +99,8 @@ class PermissionsColumn {
 							if ( 'all' == $mkdo_rcbr_restrict_sub_content ) {
 								$icon_rendered = true;
 								?>
-									<i class="dashicons-before dashicons-lock icon-large icon-muted"></i>
-									<i class="dashicons-before dashicons-lock icon-small icon-right icon-dark"></i>
+									<i class="dashicons-before dashicons-lock dashicon-large dashicon-muted"></i>
+									<i class="dashicons-before dashicons-lock dashicon-small dashicon-right dashicon-dark"></i>
 									<span class="screen-reader-text">
 										<?php esc_html_e( 'Restricted Access to Content (via Parent)', $this->text_domain );?>
 									</span>
@@ -108,8 +108,8 @@ class PermissionsColumn {
 							} else if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) {
 								$icon_rendered = true;
 								?>
-									<i class="dashicons-before dashicons-unlock icon-large icon-muted"></i>
-									<i class="dashicons-before dashicons-lock icon-small icon-right icon-dark"></i>
+									<i class="dashicons-before dashicons-unlock dashicon-large dashicon-muted"></i>
+									<i class="dashicons-before dashicons-lock dashicon-small dashicon-right dashicon-dark"></i>
 									<span class="screen-reader-text">
 										<?php esc_html_e( 'Restricted Access to Content (via Parent)', $this->text_domain );?>
 									</span>
@@ -125,7 +125,7 @@ class PermissionsColumn {
 				if ( ! $icon_rendered ) {
 					$icon_rendered = true;
 					?>
-						<i class="dashicons-before dashicons-unlock icon-large icon-muted"></i>
+						<i class="dashicons-before dashicons-unlock dashicon-large dashicon-muted"></i>
 						<span class="screen-reader-text">
 							<?php esc_html_e( 'Public Access to Content (No permissions set)', $this->text_domain );?>
 						</span>
