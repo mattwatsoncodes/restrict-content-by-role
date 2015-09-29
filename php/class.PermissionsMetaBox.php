@@ -4,6 +4,9 @@ namespace mkdo\restrict_content_by_role;
 
 /**
  * Class PermissionsMetaBox
+ *
+ * Creates a Meta Box to set permissions on content
+ *
  * @package mkdo\restrict_content_by_role
  */
 class PermissionsMetaBox {
@@ -21,11 +24,15 @@ class PermissionsMetaBox {
 
 	public function add_meta_box() {
 
+		$post_types          = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
+
+		if( ! is_array( $post_types ) ) {
+			$post_types = array();
+		}
+
 		$meta_box_id         = 'mkdo_rcbr';
 		$meta_box_title      = __( 'User Role Access', $this->text_domain );
-		$meta_box_post_types = array(
-			'page'
-		);
+		$meta_box_post_types = $post_types;
 		$meta_box_context    = 'normal';
 		$meta_box_priority   = 'low';
 
@@ -59,6 +66,7 @@ class PermissionsMetaBox {
 		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
 		$mkdo_rcbr_restrict_media       = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_media', true );
 		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
+		$is_hirachical                  = is_post_type_hierarchical( $post->post_type );
 
 		if ( ! is_array( $mkdo_rcbr_roles ) ) {
 			$mkdo_rcbr_roles = array();
@@ -73,10 +81,10 @@ class PermissionsMetaBox {
 		}
 
 		// Is this post inheriting parent restrictions?
-		if( ! empty( $post->ancestors ) ) {
+		if ( ! empty( $post->ancestors ) ) {
 			foreach ( $post->ancestors as $parent ) {
 				$parent_mkdo_rcbr_roles = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
-				if( ! empty( $parent_mkdo_rcbr_roles ) ) {
+				if ( ! empty( $parent_mkdo_rcbr_roles ) ) {
 					$is_restricted_by_parent = true;
 					$parent_id               = $parent;
 					break;
@@ -84,7 +92,7 @@ class PermissionsMetaBox {
 			}
 		}
 
-		if( $is_restricted_by_parent ) { ?>
+		if ( $is_restricted_by_parent ) { ?>
 
 			<div class="field field-radio-group field-override-parent-permissions">
 				<p class="field-title">
@@ -93,8 +101,8 @@ class PermissionsMetaBox {
 					</label>
 				</p>
 				<p class="field-description">
-					<?php printf( esc_html__('%sWarning:%s This content of this item has been %srestricted by one of its parents%s.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
-					<?php printf( esc_html__('You can %sedit the parent content permissions%s, or choose an override option.', $this->text_domain ), '<a href="' . get_edit_post_link( $parent_id ) . '#mkdo_rcbr">', '</a>' );?>
+					<?php printf( esc_html__( '%sWarning:%s This content of this item has been %srestricted by one of its parents%s.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
+					<?php printf( esc_html__( 'You can %sedit the parent content permissions%s, or choose an override option.', $this->text_domain ), '<a href="' . get_edit_post_link( $parent_id ) . '#mkdo_rcbr">', '</a>' );?>
 				</p>
 				<ul class="field-input">
 					<li>
@@ -128,7 +136,13 @@ class PermissionsMetaBox {
 					</label>
 				</p>
 				<p class="field-description">
-					<?php esc_html_e( 'Select the User Roles that are able to view this content (or its sub content). If no roles are selected the content will be publicly accessible.', $this->text_domain );?>
+					<?php
+					if( $is_hirachical ) {
+						esc_html_e( 'Select the User Roles that are able to view this content (or its sub content). If no roles are selected the content will be publicly accessible.', $this->text_domain );
+					} else {
+						esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', $this->text_domain );
+					}
+					?>
 				</p>
 				<ul class="field-input">
 					<?php
@@ -146,36 +160,40 @@ class PermissionsMetaBox {
 				</ul>
 			</div>
 
-			<div class="field field-radio-group field-restrict-access-sub-content">
-				<p class="field-title">
-					<label>
-						<?php esc_html_e( 'Restrict Access to Sub Content', $this->text_domain );?>
-					</label>
-				</p>
-				<p class="field-description">
-					<?php esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', $this->text_domain );?>
-				</p>
-				<ul class="field-input">
-					<li>
+			<?php if( $is_hirachical ) { ?>
+				<div class="field field-radio-group field-restrict-access-sub-content">
+					<p class="field-title">
 						<label>
-							<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="content" <?php if ( 'content' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Restrict Access to Content Only', $this->text_domain );?>
+							<?php esc_html_e( 'Restrict Access to Sub Content', $this->text_domain );?>
 						</label>
-					</li>
-					<li>
-						<label>
-							<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="all" <?php if ( 'all' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Restrict Access to Content and Sub Content', $this->text_domain );?>
-						</label>
-					</li>
-					<li>
-						<label>
-							<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="sub" <?php if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Restrict Access to Sub Content Only', $this->text_domain );?>
-						</label>
-					</li>
-				</ul>
-			</div>
+					</p>
+					<p class="field-description">
+						<?php esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', $this->text_domain );?>
+					</p>
+					<ul class="field-input">
+						<li>
+							<label>
+								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="content" <?php if ( 'content' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<?php esc_html_e( 'Restrict Access to Content Only', $this->text_domain );?>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="all" <?php if ( 'all' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<?php esc_html_e( 'Restrict Access to Content and Sub Content', $this->text_domain );?>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="sub" <?php if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<?php esc_html_e( 'Restrict Access to Sub Content Only', $this->text_domain );?>
+							</label>
+						</li>
+					</ul>
+				</div>
+			<?php } else { ?>
+				<input type="hidden" name="mkdo_rcbr_restrict_sub_content" value="content" />
+			<?php }?>
 
 			<div class="field field-checkbox field-restrict-access-media">
 				<p class="field-title">
@@ -184,7 +202,7 @@ class PermissionsMetaBox {
 					</label>
 				</p>
 				<p class="field-description">
-					<?php printf( esc_html__('If you select %s\'Restrict Access to Media\'%s, then any media which is not publicly available elsewhere, and located in the %s\'content\'%s will be restricted to the above settings.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
+					<?php printf( esc_html__( 'If you select %s\'Restrict Access to Media\'%s, then any media which is not publicly available elsewhere, and located in the %s\'content\'%s will be restricted to the above settings.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
 				</p>
 				<ul class="field-input">
 					<li>
@@ -229,14 +247,14 @@ class PermissionsMetaBox {
 		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
 		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
 		$mkdo_rcbr_restrict_media       = isset( $_POST['mkdo_rcbr_restrict_media'] )       ?  true : false;
-		$mkdo_rcbr_override    		    = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : 'none';
+		$mkdo_rcbr_override    		    = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
 
-		foreach( $mkdo_rcbr_roles as &$role ) {
+		foreach ( $mkdo_rcbr_roles as &$role ) {
 			$role = sanitize_text_field( $role );
 		}
 
 		// If we are not overriding, get rid of the overrides
-		if( 'override' != $mkdo_rcbr_override ) {
+		if ( ! empty( $mkdo_rcbr_override ) && 'override' != $mkdo_rcbr_override ) {
 			$mkdo_rcbr_roles                = array();
 			$mkdo_rcbr_restrict_sub_content = 'content';
 			$mkdo_rcbr_restrict_media       = false;

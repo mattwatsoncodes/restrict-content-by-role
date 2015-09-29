@@ -18,23 +18,31 @@
  */
 
 // Load Classes
-
 require_once "php/class.MainController.php";
+require_once "php/class.Options.php";
 require_once "php/class.AssetsController.php";
 require_once "php/class.PermissionsMetaBox.php";
 require_once "php/class.PermissionsColumn.php";
+require_once "php/class.LoginErrors.php";
+require_once "php/class.AccessController.php";
 
 // Define Namespaces
 use mkdo\restrict_content_by_role\MainController;
+use mkdo\restrict_content_by_role\Options;
 use mkdo\restrict_content_by_role\AssetsController;
 use mkdo\restrict_content_by_role\PermissionsMetaBox;
 use mkdo\restrict_content_by_role\PermissionsColumn;
+use mkdo\restrict_content_by_role\LoginErrors;
+use mkdo\restrict_content_by_role\AccessController;
 
 // Initialize Controllers
+$options              = new Options();
 $assets_controller    = new AssetsController( __FILE__ );
 $permissions_meta_box = new PermissionsMetaBox();
 $permissions_column   = new PermissionsColumn();
-$controller           = new MainController( __FILE__, $assets_controller, $permissions_meta_box, $permissions_column );
+$login_errors         = new LoginErrors();
+$access_controller    = new AccessController( $login_errors );
+$controller           = new MainController( __FILE__, $options, $assets_controller, $permissions_meta_box, $permissions_column, $access_controller );
 
 // Run the Plugin
 $controller->run();
