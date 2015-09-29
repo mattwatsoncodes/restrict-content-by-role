@@ -39,27 +39,27 @@
 #mkdo_rcbr_access {
 	width: 50px;
 }
-.dashicons-before.icon-large.dashicons-unlock:before {
+.dashicons-before.dashicon-large.dashicons-unlock:before {
 	font-size: 18px !important;
 }
-.dashicons-before.icon-large:before {
+.dashicons-before.dashicon-large:before {
 	font-size: 20px !important;
 }
-.dashicons-before.icon-small.dashicons-unlock:before {
+.dashicons-before.dashicon-small.dashicons-unlock:before {
 	font-size: 14px !important;
 }
-.dashicons-before.icon-small:before {
+.dashicons-before.dashicon-small:before {
 	font-size: 16px !important;
 }
-.dashicons-before.icon-right:before {
+.dashicons-before.dashicon-right:before {
 	margin-top: 7px;
 	margin-left: -15px;
 	color: #aaa !important;
 }
-.dashicons-before.icon-muted:before {
+.dashicons-before.dashicon-muted:before {
 	color: #EFEFEF !important;
 }
-.dashicons-before.icon-dark:before {
+.dashicons-before.dashicon-dark:before {
 	color: #333 !important;
 }
 
