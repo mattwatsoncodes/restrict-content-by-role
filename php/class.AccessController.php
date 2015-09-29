@@ -29,8 +29,7 @@ class AccessController {
 		$mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
 		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
 		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
-		$mkdo_rcbr_restrict_media       = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_media', true );
-		// TODO: Custom Redirect URLs
+		$mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
 
 		// If the content is not a public override
 		if ( 'public' != $mkdo_rcbr_override ) {
@@ -49,7 +48,7 @@ class AccessController {
 					$mkdo_rcbr_roles                = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
 					$mkdo_rcbr_override             = get_post_meta( $parent, '_mkdo_rcbr_override', true );
 					$mkdo_rcbr_restrict_sub_content = '';
-					$mkdo_rcbr_restrict_media       = '';
+					$mkdo_rcbr_custom_redirect       = '';
 
 					if ( ! empty( $mkdo_rcbr_roles ) || 'public' == $mkdo_rcbr_override ) {
 
@@ -60,7 +59,7 @@ class AccessController {
 						}
 
 						$mkdo_rcbr_restrict_sub_content = get_post_meta( $parent, '_mkdo_rcbr_restrict_sub_content', true );
-						$mkdo_rcbr_restrict_media       = get_post_meta( $parent, '_mkdo_rcbr_restrict_media', true );
+						$mkdo_rcbr_custom_redirect      = get_post_meta( $parent, '_mkdo_rcbr_custom_redirect', true );
 
 						if ( 'all' == $mkdo_rcbr_restrict_sub_content || 'sub' == $mkdo_rcbr_restrict_sub_content ) {
 							$do_redirect = true;
@@ -93,7 +92,12 @@ class AccessController {
 
 		// If the user does not have access, redirect them
 		if ( ! $has_access ) {
-			wp_safe_redirect( $redirect_url );
+
+			if( ! empty( $mkdo_rcbr_custom_redirect ) ) {
+				$redirect_url = $mkdo_rcbr_custom_redirect;
+			}
+
+			wp_redirect( $redirect_url, 302 );
 			exit;
 		}
 	}

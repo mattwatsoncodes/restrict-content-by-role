@@ -64,7 +64,7 @@ class PermissionsMetaBox {
 		$roles                          = $wp_roles->roles;
 		$mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
 		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
-		$mkdo_rcbr_restrict_media       = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_media', true );
+		$mkdo_rcbr_custom_redirect       = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
 		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
 		$is_hirachical                  = is_post_type_hierarchical( $post->post_type );
 
@@ -195,21 +195,18 @@ class PermissionsMetaBox {
 				<input type="hidden" name="mkdo_rcbr_restrict_sub_content" value="content" />
 			<?php }?>
 
-			<div class="field field-checkbox field-restrict-access-media">
+			<div class="field field-checkbox field-custom-redirect">
 				<p class="field-title">
-					<label>
-						<?php esc_html_e( 'Restrict Access to Media', $this->text_domain );?>
+					<label for="mkdo_rcbr_custom_redirect">
+						<?php esc_html_e( 'Custom Redirect', $this->text_domain );?>
 					</label>
 				</p>
 				<p class="field-description">
-					<?php printf( esc_html__( 'If you select %s\'Restrict Access to Media\'%s, then any media which is not publicly available elsewhere, and located in the %s\'content\'%s will be restricted to the above settings.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
+					<?php esc_html_e( 'Enter the full URL that you wish content affected by the above rules to redirect to. (Leave blank to use default redirect settings).', $this->text_domain );?>
 				</p>
 				<ul class="field-input">
 					<li>
-						<label>
-							<input type="checkbox" name="mkdo_rcbr_restrict_media" value="true" <?php if ( ! empty( $mkdo_rcbr_restrict_media ) ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Restrict Access to Media', $this->text_domain );?>
-						</label>
+						<input type="text" name="mkdo_rcbr_custom_redirect" id="mkdo_rcbr_custom_redirect" placeholder="http://example.com/content/" value="<?php echo $mkdo_rcbr_custom_redirect;?>" />
 					</li>
 				</ul>
 			</div>
@@ -246,7 +243,7 @@ class PermissionsMetaBox {
 
 		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
 		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
-		$mkdo_rcbr_restrict_media       = isset( $_POST['mkdo_rcbr_restrict_media'] )       ?  true : false;
+		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  sanitize_url( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
 		$mkdo_rcbr_override    		    = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
 
 		foreach ( $mkdo_rcbr_roles as &$role ) {
@@ -257,12 +254,12 @@ class PermissionsMetaBox {
 		if ( ! empty( $mkdo_rcbr_override ) && 'override' != $mkdo_rcbr_override ) {
 			$mkdo_rcbr_roles                = array();
 			$mkdo_rcbr_restrict_sub_content = 'content';
-			$mkdo_rcbr_restrict_media       = false;
+			$mkdo_rcbr_custom_redirect      = null;
 		}
 
 		update_post_meta( $post_id, '_mkdo_rcbr_roles', $mkdo_rcbr_roles );
 		update_post_meta( $post_id, '_mkdo_rcbr_restrict_sub_content', $mkdo_rcbr_restrict_sub_content );
-		update_post_meta( $post_id, '_mkdo_rcbr_restrict_media', $mkdo_rcbr_restrict_media );
+		update_post_meta( $post_id, '_mkdo_rcbr_custom_redirect', $mkdo_rcbr_custom_redirect );
 		update_post_meta( $post_id, '_mkdo_rcbr_override', $mkdo_rcbr_override );
 
 	}

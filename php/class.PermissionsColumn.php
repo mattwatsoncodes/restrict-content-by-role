@@ -36,7 +36,6 @@ class PermissionsColumn {
 				$mkdo_rcbr_roles                = get_post_meta( $post_id, '_mkdo_rcbr_roles', true );
 				$mkdo_rcbr_override             = get_post_meta( $post_id, '_mkdo_rcbr_override', true );
 				$mkdo_rcbr_restrict_sub_content = get_post_meta( $post_id, '_mkdo_rcbr_restrict_sub_content', true );
-				$mkdo_rcbr_restrict_media       = get_post_meta( $post_id, '_mkdo_rcbr_restrict_media', true );
 
 				// If content has been overridden
 				if ( 'public' == $mkdo_rcbr_override ) {
@@ -87,7 +86,6 @@ class PermissionsColumn {
 						$mkdo_rcbr_roles                = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
 						$mkdo_rcbr_override             = get_post_meta( $parent, '_mkdo_rcbr_override', true );
 						$mkdo_rcbr_restrict_sub_content = '';
-						$mkdo_rcbr_restrict_media       = '';
 
 						if ( ! empty( $mkdo_rcbr_roles ) || 'public' == $mkdo_rcbr_override ) {
 
