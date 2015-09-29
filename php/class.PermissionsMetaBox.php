@@ -202,7 +202,7 @@ class PermissionsMetaBox {
 					</label>
 				</p>
 				<p class="field-description">
-					<?php esc_html_e( 'Enter the full URL that you wish content affected by the above rules to redirect to. (Leave blank to use default redirect settings).', $this->text_domain );?>
+					<?php esc_html_e( 'Enter the full URL that you wish restricted users to redirect to. (Leave blank to use default redirect settings).', $this->text_domain );?>
 				</p>
 				<ul class="field-input">
 					<li>

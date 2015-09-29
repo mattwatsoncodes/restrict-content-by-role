@@ -22,6 +22,7 @@ class Options {
 		// Register Settings
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_post_types' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_restrict_message' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_redirect' );
 
 		// Add sections
 		add_settings_section( 'mkdo_rcbr_post_types_section', 'Choose Post Types', array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
@@ -29,7 +30,8 @@ class Options {
 
     	// Add fields to a section
 		add_settings_field( 'mkdo_rcbr_post_types_select', 'Choose Post Types:', array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
-		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Enter Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_default_redirect', 'Redirect URL:', array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 	}
 
 	/**
@@ -77,27 +79,28 @@ class Options {
 
 		unset( $post_types['attachment'] );
 
-		if( ! is_array( $mkdo_rcbr_post_types ) ) {
+		if ( ! is_array( $mkdo_rcbr_post_types ) ) {
 			$mkdo_rcbr_post_types = array();
 		}
 
 		?>
-
-		<ul>
-			<?php
-			foreach ( $post_types as $key => $post_type ) {
-				$post_type_object = get_post_type_object( $post_type );
-				?>
-				<li>
-					<label>
-						<input type="checkbox" name="mkdo_rcbr_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
-						<?php echo $post_type_object->labels->name;?>
-					</label>
-				</li>
+		<div class="field field-checkbox field-post-types">
+			<ul class="field-input">
 				<?php
-			}
-			?>
-		</ul>
+				foreach ( $post_types as $key => $post_type ) {
+					$post_type_object = get_post_type_object( $post_type );
+					?>
+					<li>
+						<label>
+							<input type="checkbox" name="mkdo_rcbr_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
+							<?php echo $post_type_object->labels->name;?>
+						</label>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
 		<?php
 	}
 
@@ -106,7 +109,7 @@ class Options {
 	 */
 	public function mkdo_rcbr_default_restrict_message_section_cb() {
 		echo '<p>';
-		esc_html_e( 'Add the message that you wish to appear on the Login Page for restricted users', $this->text_domain  );
+		esc_html_e( 'Add the message that you wish to appear on the Login Page for restricted users. Or alternativly redirect the restricted user to a URL of your choice.', $this->text_domain  );
 		echo '</p>';
 	}
 
@@ -119,17 +122,47 @@ class Options {
 
 		?>
 
-		<p>
-			<label for="mkdo_rcbr_default_restrict_message">
-				<?php esc_html_e( 'Message', $this->text_domain );?>
-			</label>
-		</p>
-		<p>
-			<textarea name="mkdo_rcbr_default_restrict_message" id="mkdo_rcbr_default_restrict_message" style="width:100%;" rows="4"><?php echo $mkdo_rcbr_default_restrict_message;?></textarea>
-		</p>
+		<div class="field field-restrict-message">
+			<p class="field-title">
+				<label for="mkdo_rcbr_default_restrict_message" class="screen-reader-text">
+					<?php esc_html_e( 'Message', $this->text_domain );?>
+				</label>
+			</p>
+			<p class="field-input">
+				<textarea name="mkdo_rcbr_default_restrict_message" id="mkdo_rcbr_default_restrict_message"><?php echo $mkdo_rcbr_default_restrict_message;?></textarea>
+			</p>
+		</div>
 
 		<?php
 	}
+
+	/**
+	 * Call back for the restrict message field
+	 */
+	public function mkdo_rcbr_default_redirect_cb() {
+
+		$mkdo_rcbr_default_redirect = get_option( 'mkdo_rcbr_default_redirect' );
+		?>
+
+		<div class="field field-redirect-url">
+			<p class="field-title">
+				<label for="mkdo_rcbr_default_redirect" class="screen-reader-text">
+					<?php esc_html_e( 'Redirect Url', $this->text_domain );?>
+				</label>
+			</p>
+			<p class="field-description">
+				<?php esc_html_e( 'Enter the full URL that you wish to redirect to. (Leave blank to redirect to login screen).', $this->text_domain );?>
+			</p>
+			<p class="field-input">
+				<input type="text" name="mkdo_rcbr_default_redirect" id="mkdo_rcbr_default_redirect" placeholder="http://example.com/content/" value="<?php echo $mkdo_rcbr_default_redirect;?>" />
+			</p>
+		</div>
+
+		<?php
+	}
+
+
+
 
 	public function run() {
 		add_action( 'admin_init', array( $this, 'init_options_page' ) );

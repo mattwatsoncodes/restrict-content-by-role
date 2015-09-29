@@ -30,6 +30,11 @@ class AccessController {
 		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
 		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
 		$mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
+		$mkdo_rcbr_default_redirect     = get_option( 'mkdo_rcbr_default_redirect' );
+
+		if( ! empty( $mkdo_rcbr_default_redirect ) ) {
+			$redirect_url = $mkdo_rcbr_default_redirect;
+		}
 
 		// If the content is not a public override
 		if ( 'public' != $mkdo_rcbr_override ) {

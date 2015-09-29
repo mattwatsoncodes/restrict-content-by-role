@@ -62,3 +62,38 @@
 .dashicons-before.icon-dark:before {
 	color: #333 !important;
 }
+
+/* Options */
+
+.settings_page_restrict_content_by_role .field {
+	margin-bottom: 30px;
+	display: block;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+.settings_page_restrict_content_by_role .field:last-child {
+	border: none;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+.settings_page_restrict_content_by_role .field-title {
+	font-weight: bold;
+}
+.settings_page_restrict_content_by_role .field-description {
+	color: #aaa;
+	font-style: italic;
+	max-width: 800px;
+}
+
+.settings_page_restrict_content_by_role #mkdo_rcbr_default_restrict_message {
+	width: 100%;
+	max-width: 800px;
+	height: 80px;
+}
+
+.settings_page_restrict_content_by_role #mkdo_rcbr_default_redirect {
+	width: 100%;
+	max-width: 800px;
+}
