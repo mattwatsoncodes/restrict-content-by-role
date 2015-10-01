@@ -21,7 +21,7 @@ class LoginErrors {
 	 * Do Work
 	 */
 	public function run() {
-		add_action( 'login_message', array( $this, 'error_no_access' ) );
+		add_action( 'login_message', array( $this, 'error_no_access' ), 99 );
 	}
 
 	/**

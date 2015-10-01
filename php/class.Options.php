@@ -107,7 +107,7 @@ class Options {
 	 */
 	public function mkdo_rcbr_default_restrict_message_db() {
 
-		$mkdo_rcbr_default_restrict_message = get_option( 'mkdo_rcbr_default_restrict_message', __( 'Please login to access that area of the website.', MKDO_RCBR_TEXT_DOMAIN ) );
+		$mkdo_rcbr_default_restrict_message = get_option( 'mkdo_rcbr_default_restrict_message', exc_html__( 'Please login to access that area of the website.', MKDO_RCBR_TEXT_DOMAIN ) );
 
 		?>
 
