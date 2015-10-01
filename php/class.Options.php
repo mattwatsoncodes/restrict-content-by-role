@@ -111,7 +111,7 @@ class Options {
 
 		?>
 
-		<div class="field field-restrict-message">
+		<div class="field field-textarea field-restrict-message">
 			<p class="field-title">
 				<label for="mkdo_rcbr_default_restrict_message" class="screen-reader-text">
 					<?php esc_html_e( 'Message', MKDO_RCBR_TEXT_DOMAIN );?>
@@ -126,7 +126,7 @@ class Options {
 	}
 
 	/**
-	 * Call back for the restrict message field
+	 * Call back for the redirect url
 	 */
 	public function mkdo_rcbr_default_redirect_cb() {
 
