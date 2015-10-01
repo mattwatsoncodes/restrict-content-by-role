@@ -13,10 +13,27 @@ class AccessController {
 
 	private $login_errors;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param LoginErrors $login_errors Object that renders error messages on the login screen
+	 */
 	public function __construct( LoginErrors $login_errors ) {
 		$this->login_errors = $login_errors;
 	}
 
+	/**
+	 * Do Work
+	 */
+	public function run() {
+		add_action( 'wp', array( $this, 'access_control' ) );
+
+		$this->login_errors->run();
+	}
+
+	/**
+	 * Check if user has access
+	 */
 	public function access_control() {
 
 		global $post;
@@ -105,11 +122,5 @@ class AccessController {
 			wp_redirect( $redirect_url, 302 );
 			exit;
 		}
-	}
-
-	public function run() {
-		add_action( 'wp', array( $this, 'access_control' ) );
-
-		$this->login_errors->run();
 	}
 }

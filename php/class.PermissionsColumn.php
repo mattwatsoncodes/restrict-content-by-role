@@ -11,20 +11,54 @@ namespace mkdo\restrict_content_by_role;
  */
 class PermissionsColumn {
 
-	private $text_domain;
-
-	function __construct() {
-		$this->text_domain  = 'restrict-content-by-role';
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
 	}
 
-	function add_column( $columns ) {
+	/**
+	 * Do Work
+	 */
+	public function run() {
+
+		// Get all the post types that this column needs to appear on
+		$post_types          = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
+
+		if( ! is_array( $post_types ) ) {
+			$post_types = array();
+		}
+
+		// Loop through the post types, and add the functions to the appropraite filters
+		foreach( $post_types as $key => $post_type ) {
+			if( 'post' == $post_type || 'page' == $post_type ) {
+				$post_type = $post_type . 's';
+			}
+
+			add_filter( 'manage_' . $post_type . '_columns', array( $this, 'add_column' ) );
+			add_action( 'manage_' . $post_type . '_custom_column', array( $this, 'add_column_content' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Add a column
+	 *
+	 * @param array $columns Array of columns
+	 */
+	public function add_column( $columns ) {
 
 		$columns['mkdo_rcbr_access'] = 'Access';
 
 		return $columns;
 	}
 
-	function add_column_content( $column, $post_id ) {
+	/**
+	 * Add column content
+	 *
+	 * @param string $column   Column name
+	 * @param int    $post_id  ID of the post
+	 */
+	public function add_column_content( $column, $post_id ) {
 
 		global $post;
 
@@ -43,7 +77,7 @@ class PermissionsColumn {
 					?>
 						<i class="dashicons-before dashicons-unlock dashicon-large"></i>
 						<span class="screen-reader-text">
-							<?php esc_html_e( 'Public Access to Content', $this->text_domain );?>
+							<?php esc_html_e( 'Public Access to Content', MKDO_RCBR_TEXT_DOMAIN );?>
 						</span>
 					<?php
 
@@ -55,7 +89,7 @@ class PermissionsColumn {
 						?>
 							<i class="dashicons-before dashicons-lock dashicon-large"></i>
 							<span class="screen-reader-text">
-								<?php esc_html_e( 'Restricted Access to Content', $this->text_domain );?>
+								<?php esc_html_e( 'Restricted Access to Content', MKDO_RCBR_TEXT_DOMAIN );?>
 							</span>
 						<?php
 
@@ -65,7 +99,7 @@ class PermissionsColumn {
 							<i class="dashicons-before dashicons-lock dashicon-large"></i>
 							<i class="dashicons-before dashicons-lock dashicon-small dashicon-right"></i>
 							<span class="screen-reader-text">
-								<?php esc_html_e( 'Restricted Access to Content and Sub Content', $this->text_domain );?>
+								<?php esc_html_e( 'Restricted Access to Content and Sub Content', MKDO_RCBR_TEXT_DOMAIN );?>
 							</span>
 						<?php
 					} else if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) {
@@ -74,7 +108,7 @@ class PermissionsColumn {
 							<i class="dashicons-before dashicons-unlock dashicon-large"></i>
 							<i class="dashicons-before dashicons-lock dashicon-small dashicon-right"></i>
 							<span class="screen-reader-text">
-								<?php esc_html_e( 'Restricted Access to Sub Content Only', $this->text_domain );?>
+								<?php esc_html_e( 'Restricted Access to Sub Content Only', MKDO_RCBR_TEXT_DOMAIN );?>
 							</span>
 						<?php
 					}
@@ -102,7 +136,7 @@ class PermissionsColumn {
 									<i class="dashicons-before dashicons-lock dashicon-large dashicon-muted"></i>
 									<i class="dashicons-before dashicons-lock dashicon-small dashicon-right dashicon-dark"></i>
 									<span class="screen-reader-text">
-										<?php esc_html_e( 'Restricted Access to Content (via Parent)', $this->text_domain );?>
+										<?php esc_html_e( 'Restricted Access to Content (via Parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 									</span>
 								<?php
 							} else if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) {
@@ -111,7 +145,7 @@ class PermissionsColumn {
 									<i class="dashicons-before dashicons-unlock dashicon-large dashicon-muted"></i>
 									<i class="dashicons-before dashicons-lock dashicon-small dashicon-right dashicon-dark"></i>
 									<span class="screen-reader-text">
-										<?php esc_html_e( 'Restricted Access to Content (via Parent)', $this->text_domain );?>
+										<?php esc_html_e( 'Restricted Access to Content (via Parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 									</span>
 								<?php
 							}
@@ -127,30 +161,12 @@ class PermissionsColumn {
 					?>
 						<i class="dashicons-before dashicons-unlock dashicon-large dashicon-muted"></i>
 						<span class="screen-reader-text">
-							<?php esc_html_e( 'Public Access to Content (No permissions set)', $this->text_domain );?>
+							<?php esc_html_e( 'Public Access to Content (No permissions set)', MKDO_RCBR_TEXT_DOMAIN );?>
 						</span>
 					<?php
 				}
 
 				break;
-		}
-	}
-
-	public function run() {
-
-		$post_types          = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
-
-		if( ! is_array( $post_types ) ) {
-			$post_types = array();
-		}
-
-		foreach( $post_types as $key => $post_type ) {
-			if( 'post' == $post_type || 'page' == $post_type ) {
-				$post_type = $post_type . 's';
-			}
-
-			add_filter( 'manage_' . $post_type . '_columns', array( $this, 'add_column' ) );
-			add_action( 'manage_' . $post_type . '_custom_column', array( $this, 'add_column_content' ), 10, 2 );
 		}
 	}
 }

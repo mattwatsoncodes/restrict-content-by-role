@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: php/class.LoginErrors.php:23 php/class.Options.php:121
-msgid "Sorry, you do not have permission to access that area of the website."
+msgid "Please login to access that area of the website."
 msgstr ""
 
 #. Plugin Name of the plugin/theme

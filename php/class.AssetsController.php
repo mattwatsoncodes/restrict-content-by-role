@@ -9,25 +9,28 @@ namespace mkdo\restrict_content_by_role;
  */
 class AssetsController {
 
-	private $text_domain;
-	private $plugin_path = '';
-
-	function __construct( $plugin_path ) {
-		$this->plugin_path = $plugin_path;
-		$this->text_domain = 'restrict-content-by-role';
+	/**
+	 * Constructor
+	 */
+	function __construct() {
 	}
 
-	public function admin_enqueue_scripts() {
-
-		$plugin_css_url = plugins_url( 'css/plugin.css', $this->plugin_path );
-		$plugin_js_url  = plugins_url( 'js/plugin.js', $this->plugin_path );
-
-		wp_enqueue_style( $this->text_domain, $plugin_css_url );
-		wp_enqueue_script( $this->text_domain, $plugin_js_url, array('jquery'), '1.0.0', true );
-	}
-
+	/**
+	 * Do Work
+	 */
 	public function run() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
+	/**
+	 * Enqeue Scripts
+	 */
+	public function admin_enqueue_scripts() {
+
+		$plugin_css_url = plugins_url( 'css/plugin.css', MKDO_RCBR_ROOT );
+		$plugin_js_url  = plugins_url( 'js/plugin.js', MKDO_RCBR_ROOT );
+
+		wp_enqueue_style( MKDO_RCBR_TEXT_DOMAIN, $plugin_css_url );
+		wp_enqueue_script( MKDO_RCBR_TEXT_DOMAIN, $plugin_js_url, array('jquery'), '1.0.0', true );
+	}
 }

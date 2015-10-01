@@ -11,12 +11,24 @@ namespace mkdo\restrict_content_by_role;
  */
 class Options {
 
-	private $text_domain;
-
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		$this->text_domain = 'restrict-content-by-role';
 	}
 
+	/**
+	 * Do Work
+	 */
+	public function run() {
+		add_action( 'admin_init', array( $this, 'init_options_page' ) );
+		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+		add_action( 'plugin_action_links_' . plugin_basename( MKDO_RCBR_ROOT ) , array( $this, 'add_setings_link' ) );
+	}
+
+	/**
+	 * Initialise the Options Page
+	 */
 	public function init_options_page() {
 
 		// Register Settings
@@ -35,34 +47,20 @@ class Options {
 	}
 
 	/**
-	 * Add the options page
-	 */
-	public function add_options_page() {
-		add_submenu_page( 'options-general.php', esc_html__( 'Restrict Content by Role', $this->text_domain ), esc_html__( 'Restrict Content by Role', $this->text_domain ), 'manage_options', 'restrict_content_by_role', array( $this, 'render_options_page' ) );
-	}
-
-	/**
-	 * Render the options page
-	 */
-	public function render_options_page() {
-		?>
-		<div class="wrap">
-			<h2><?php esc_html_e( 'Restrict Content by Role', $this->text_domain );?></h2>
-			<form action="options.php" method="POST">
-	            <?php settings_fields( 'mkdo_rcbr_settings_group' ); ?>
-	            <?php do_settings_sections( 'mkdo_rcbr_settings' ); ?>
-	            <?php submit_button(); ?>
-	        </form>
-		</div>
-	<?php
-	}
-
-	/**
 	 * Call back for the post_type section
 	 */
 	public function mkdo_rcbr_post_types_section_cb() {
 		echo '<p>';
-		esc_html_e( 'Select the Post Types that you wish to activate this plugin on.', $this->text_domain  );
+		esc_html_e( 'Select the Post Types that you wish to activate this plugin on.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the restrict message section
+	 */
+	public function mkdo_rcbr_default_restrict_message_section_cb() {
+		echo '<p>';
+		esc_html_e( 'Add the message that you wish to appear on the Login Page for restricted users. Or alternativly redirect the restricted user to a URL of your choice.', MKDO_RCBR_TEXT_DOMAIN  );
 		echo '</p>';
 	}
 
@@ -105,27 +103,18 @@ class Options {
 	}
 
 	/**
-	 * Call back for the restrict message section
-	 */
-	public function mkdo_rcbr_default_restrict_message_section_cb() {
-		echo '<p>';
-		esc_html_e( 'Add the message that you wish to appear on the Login Page for restricted users. Or alternativly redirect the restricted user to a URL of your choice.', $this->text_domain  );
-		echo '</p>';
-	}
-
-	/**
 	 * Call back for the restrict message field
 	 */
 	public function mkdo_rcbr_default_restrict_message_db() {
 
-		$mkdo_rcbr_default_restrict_message = get_option( 'mkdo_rcbr_default_restrict_message', __( 'Sorry, you do not have permission to access that area of the website.', $this->text_domain ) );
+		$mkdo_rcbr_default_restrict_message = get_option( 'mkdo_rcbr_default_restrict_message', __( 'Please login to access that area of the website.', MKDO_RCBR_TEXT_DOMAIN ) );
 
 		?>
 
 		<div class="field field-restrict-message">
 			<p class="field-title">
 				<label for="mkdo_rcbr_default_restrict_message" class="screen-reader-text">
-					<?php esc_html_e( 'Message', $this->text_domain );?>
+					<?php esc_html_e( 'Message', MKDO_RCBR_TEXT_DOMAIN );?>
 				</label>
 			</p>
 			<p class="field-input">
@@ -147,11 +136,11 @@ class Options {
 		<div class="field field-redirect-url">
 			<p class="field-title">
 				<label for="mkdo_rcbr_default_redirect" class="screen-reader-text">
-					<?php esc_html_e( 'Redirect Url', $this->text_domain );?>
+					<?php esc_html_e( 'Redirect Url', MKDO_RCBR_TEXT_DOMAIN );?>
 				</label>
 			</p>
 			<p class="field-description">
-				<?php esc_html_e( 'Enter the full URL that you wish to redirect to. (Leave blank to redirect to login screen).', $this->text_domain );?>
+				<?php esc_html_e( 'Enter the full URL that you wish to redirect to. (Leave blank to redirect to login screen).', MKDO_RCBR_TEXT_DOMAIN );?>
 			</p>
 			<p class="field-input">
 				<input type="text" name="mkdo_rcbr_default_redirect" id="mkdo_rcbr_default_redirect" placeholder="http://example.com/content/" value="<?php echo $mkdo_rcbr_default_redirect;?>" />
@@ -161,11 +150,34 @@ class Options {
 		<?php
 	}
 
+	/**
+	 * Add the options page
+	 */
+	public function add_options_page() {
+		add_submenu_page( 'options-general.php', esc_html__( 'Restrict Content by Role', MKDO_RCBR_TEXT_DOMAIN ), esc_html__( 'Restrict Content by Role', MKDO_RCBR_TEXT_DOMAIN ), 'manage_options', 'restrict_content_by_role', array( $this, 'render_options_page' ) );
+	}
 
+	/**
+	 * Render the options page
+	 */
+	public function render_options_page() {
+		?>
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Restrict Content by Role', MKDO_RCBR_TEXT_DOMAIN );?></h2>
+			<form action="options.php" method="POST">
+	            <?php settings_fields( 'mkdo_rcbr_settings_group' ); ?>
+	            <?php do_settings_sections( 'mkdo_rcbr_settings' ); ?>
+	            <?php submit_button(); ?>
+	        </form>
+		</div>
+	<?php
+	}
 
-
-	public function run() {
-		add_action( 'admin_init', array( $this, 'init_options_page' ) );
-		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+	/**
+	 * Add 'Settings' action on installed plugin list
+	 */
+	function add_setings_link( $links ) {
+		array_unshift( $links, '<a href="options-general.php?page=restrict_content_by_role">' . esc_html__( 'Settings', MKDO_RCBR_TEXT_DOMAIN ) . '</a>');
+		return $links;
 	}
 }

@@ -11,17 +11,22 @@ namespace mkdo\restrict_content_by_role;
  */
 class MainController {
 
-	private $plugin_path;
-	private $text_domain;
 	private $options;
 	private $assets_controller;
 	private $permissions_meta_box;
 	private $permissions_column;
 	private $access_controller;
 
-	function __construct( $plugin_path, Options $options, AssetsController $assets_controller, PermissionsMetaBox $permissions_meta_box, PermissionsColumn $permissions_column, AccessController $access_controller ) {
-		$this->plugin_path          = $plugin_path;
-		$this->text_domain          = 'restrict-content-by-role';
+	/**
+	 * Constructor
+	 * 
+	 * @param Options            $options              Object defining the options page
+	 * @param AssetsController   $assets_controller    Object to load the assets
+	 * @param PermissionsMetaBox $permissions_meta_box Object defining the permissions meta box
+	 * @param PermissionsColumn  $permissions_column   Object defining the permissions column
+	 * @param AccessController   $access_controller    Object to control content access
+	 */
+	public function __construct( Options $options, AssetsController $assets_controller, PermissionsMetaBox $permissions_meta_box, PermissionsColumn $permissions_column, AccessController $access_controller ) {
 		$this->options              = $options;
 		$this->assets_controller    = $assets_controller;
 		$this->permissions_meta_box = $permissions_meta_box;
@@ -29,8 +34,11 @@ class MainController {
 		$this->access_controller    = $access_controller;
 	}
 
+	/**
+	 * Do Work
+	 */
 	public function run() {
-		load_plugin_textdomain( $this->text_domain, false, $this->plugin_path . '\languages' );
+		load_plugin_textdomain( MKDO_RCBR_TEXT_DOMAIN, false, MKDO_RCBR_ROOT . '\languages' );
 
 		$this->options->run();
 		$this->assets_controller->run();

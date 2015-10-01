@@ -11,32 +11,44 @@ namespace mkdo\restrict_content_by_role;
  */
 class PermissionsMetaBox {
 
-	private $text_domain;
 	private $nonce_key;
 	private $nonce_action;
 
-	function __construct() {
-
-		$this->text_domain  = 'restrict-content-by-role';
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
 		$this->nonce_key    = 'restrict_content_by_role_nonce';
 		$this->nonce_action = 'restrict_content_by_role';
 	}
 
+	/**
+	 * Do Work
+	 */
+	public function run() {
+		add_filter( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'save_post', array( $this, 'save_meta_box' ) );
+	}
+
+	/**
+	 * Add the Meta Box
+	 */
 	public function add_meta_box() {
 
-		$post_types          = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
-
-		if( ! is_array( $post_types ) ) {
-			$post_types = array();
-		}
-
 		$meta_box_id         = 'mkdo_rcbr';
-		$meta_box_title      = __( 'User Role Access', $this->text_domain );
-		$meta_box_post_types = $post_types;
+		$meta_box_title      = __( 'User Role Access', MKDO_RCBR_TEXT_DOMAIN );
+		$meta_box_post_types = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
 		$meta_box_context    = 'normal';
 		$meta_box_priority   = 'low';
 
+		if( ! is_array( $meta_box_post_types ) ) {
+			$meta_box_post_types = array();
+		}
+
+		// Only show if the user can Manage Options
 		if ( current_user_can( 'manage_options' ) ) {
+
+			// Add the meta box to the appropraite post types
 			foreach ( $meta_box_post_types as $post_type ) {
 
 				// Check that the post type is public
@@ -55,6 +67,10 @@ class PermissionsMetaBox {
 		}
 	}
 
+	/**
+	 * Render the Meta Box
+	 * @param  Object $post The Post Object
+	 */
 	public function render_meta_box( $post ) {
 
 		global $wp_roles;
@@ -97,30 +113,30 @@ class PermissionsMetaBox {
 			<div class="field field-radio-group field-override-parent-permissions">
 				<p class="field-title">
 					<label>
-						<?php esc_html_e( 'Override Parent Permissions', $this->text_domain );?>
+						<?php esc_html_e( 'Override Parent Permissions', MKDO_RCBR_TEXT_DOMAIN );?>
 					</label>
 				</p>
 				<p class="field-description">
-					<?php printf( esc_html__( '%sWarning:%s This content of this item has been %srestricted by one of its parents%s.', $this->text_domain ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
-					<?php printf( esc_html__( 'You can %sedit the parent content permissions%s, or choose an override option.', $this->text_domain ), '<a href="' . get_edit_post_link( $parent_id ) . '#mkdo_rcbr">', '</a>' );?>
+					<?php printf( esc_html__( '%sWarning:%s This content of this item has been %srestricted by one of its parents%s.', MKDO_RCBR_TEXT_DOMAIN ), '<strong>', '</strong>', '<strong>', '</strong>' );?>
+					<?php printf( esc_html__( 'You can %sedit the parent content permissions%s, or choose an override option.', MKDO_RCBR_TEXT_DOMAIN ), '<a href="' . get_edit_post_link( $parent_id ) . '#mkdo_rcbr">', '</a>' );?>
 				</p>
 				<ul class="field-input">
 					<li>
 						<label>
 							<input type="radio" name="mkdo_rcbr_override" value="none" <?php if ( 'none' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'No override', $this->text_domain );?>
+							<?php esc_html_e( 'No override', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
 					<li>
 						<label>
 							<input type="radio" name="mkdo_rcbr_override" value="public" <?php if ( 'public' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Grant Public Access (Override permissions set by parent)', $this->text_domain );?>
+							<?php esc_html_e( 'Grant Public Access (Override permissions set by parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
 					<li>
 						<label>
 							<input type="radio" name="mkdo_rcbr_override" value="override" <?php if ( 'override' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
-							<?php esc_html_e( 'Set New Permissions (Override permissions set by parent)', $this->text_domain );?>
+							<?php esc_html_e( 'Set New Permissions (Override permissions set by parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
 				</ul>
@@ -132,15 +148,15 @@ class PermissionsMetaBox {
 			<div class="field field-checkbox-group field-restrict-content-user-roles">
 				<p class="field-title">
 					<label>
-						<?php esc_html_e( 'Restrict Content to User Roles', $this->text_domain );?>
+						<?php esc_html_e( 'Restrict Content to User Roles', MKDO_RCBR_TEXT_DOMAIN );?>
 					</label>
 				</p>
 				<p class="field-description">
 					<?php
 					if( $is_hirachical ) {
-						esc_html_e( 'Select the User Roles that are able to view this content (or its sub content). If no roles are selected the content will be publicly accessible.', $this->text_domain );
+						esc_html_e( 'Select the User Roles that are able to view this content (or its sub content). If no roles are selected the content will be publicly accessible.', MKDO_RCBR_TEXT_DOMAIN );
 					} else {
-						esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', $this->text_domain );
+						esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', MKDO_RCBR_TEXT_DOMAIN );
 					}
 					?>
 				</p>
@@ -164,29 +180,29 @@ class PermissionsMetaBox {
 				<div class="field field-radio-group field-restrict-access-sub-content">
 					<p class="field-title">
 						<label>
-							<?php esc_html_e( 'Restrict Access to Sub Content', $this->text_domain );?>
+							<?php esc_html_e( 'Restrict Access to Sub Content', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</p>
 					<p class="field-description">
-						<?php esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', $this->text_domain );?>
+						<?php esc_html_e( 'Select the User Roles that are able to view this content. If no roles are selected the content will be publicly accessible.', MKDO_RCBR_TEXT_DOMAIN );?>
 					</p>
 					<ul class="field-input">
 						<li>
 							<label>
 								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="content" <?php if ( 'content' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-								<?php esc_html_e( 'Restrict Access to Content Only', $this->text_domain );?>
+								<?php esc_html_e( 'Restrict Access to Content Only', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 						<li>
 							<label>
 								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="all" <?php if ( 'all' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-								<?php esc_html_e( 'Restrict Access to Content and Sub Content', $this->text_domain );?>
+								<?php esc_html_e( 'Restrict Access to Content and Sub Content', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 						<li>
 							<label>
 								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="sub" <?php if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
-								<?php esc_html_e( 'Restrict Access to Sub Content Only', $this->text_domain );?>
+								<?php esc_html_e( 'Restrict Access to Sub Content Only', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 					</ul>
@@ -198,11 +214,11 @@ class PermissionsMetaBox {
 			<div class="field field-checkbox field-custom-redirect">
 				<p class="field-title">
 					<label for="mkdo_rcbr_custom_redirect">
-						<?php esc_html_e( 'Custom Redirect', $this->text_domain );?>
+						<?php esc_html_e( 'Custom Redirect', MKDO_RCBR_TEXT_DOMAIN );?>
 					</label>
 				</p>
 				<p class="field-description">
-					<?php esc_html_e( 'Enter the full URL that you wish restricted users to redirect to. (Leave blank to use default redirect settings).', $this->text_domain );?>
+					<?php esc_html_e( 'Enter the full URL that you wish restricted users to redirect to. (Leave blank to use default redirect settings).', MKDO_RCBR_TEXT_DOMAIN );?>
 				</p>
 				<ul class="field-input">
 					<li>
@@ -219,6 +235,11 @@ class PermissionsMetaBox {
 
 	}
 
+	/**
+	 * Save the Meta Box
+	 *
+	 * @param  int $post_id The Post ID
+	 */
 	public function save_meta_box( $post_id ) {
 
 		// If it is just a revision don't worry about it
@@ -262,10 +283,5 @@ class PermissionsMetaBox {
 		update_post_meta( $post_id, '_mkdo_rcbr_custom_redirect', $mkdo_rcbr_custom_redirect );
 		update_post_meta( $post_id, '_mkdo_rcbr_override', $mkdo_rcbr_override );
 
-	}
-
-	public function run() {
-		add_filter( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
-		add_action( 'save_post', array( $this, 'save_meta_box' ) );
 	}
 }
