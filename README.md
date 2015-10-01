@@ -22,7 +22,7 @@ The plugin provides the following functionality:
 1. Download this repository and unzip it into the folder `restrict-content-by-role`
 2. Upload the `restrict-content-by-role` folder to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Configure the plugin var the 'Restrict Pages by Role' options page under the WordPress 'Settings' Menu
+4. Configure the plugin via the 'Restrict Content by Role' options page under the WordPress 'Settings' Menu
 
 ## Changelog
 
