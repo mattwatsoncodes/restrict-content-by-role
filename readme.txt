@@ -4,7 +4,7 @@ Donate link:
 Tags: restrict, restrict content, lockdown, lockdown content, pages, lockdown pages, management, manage pages, manage user roles, manage users, manage roles, user, roles, permissions, manage page permissions, manage content permissions, manage permissions, manage sub page permissions
 Requires at least: 4.3
 Tested up to: 4.3
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

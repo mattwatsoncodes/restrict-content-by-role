@@ -26,5 +26,6 @@ The plugin provides the following functionality:
 
 ## Changelog
 
+**1.2.0** - *01.10.2015* - Updated for submission to WordPress plugin repository.  
 **1.1.0** - *01.10.2015* - Reviewed and refactored code.  
 **1.0.0** - *29.09.2015* - First stable release.  
