@@ -1,37 +1,50 @@
 /* Meta Box Styles */
 
-#mkdo_rcbr .field {
+#mkdo_rcbr .field,
+#mkdo_rcbr_admin .field {
 	margin-bottom: 30px;
 	display: block;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #dfdfdf;
 }
 
-#mkdo_rcbr .field-override-parent-permissions {
+#mkdo_rcbr .field-override-parent-permissions,
+#mkdo_rcbr_admin .field-override-parent-permissions {
 	background-color: #FAFAFA;
 	padding:12px;
 	border: 1px solid #DDD;
 	margin-top:12px;
 }
 
-#mkdo_rcbr .field:last-child {
+#mkdo_rcbr .field:last-child,
+#mkdo_rcbr_admin .field:last-child {
 	border: none;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
 }
 
-#mkdo_rcbr .field-title {
+#mkdo_rcbr .field-title,
+#mkdo_rcbr_admin .field-title {
 	font-weight: bold;
 }
-#mkdo_rcbr .field-description {
+#mkdo_rcbr .field-description,
+#mkdo_rcbr_admin .field-description {
 	color: #aaa;
 	font-style: italic;
 	max-width: 800px;
 }
 
-#mkdo_rcbr #mkdo_rcbr_custom_redirect {
+#mkdo_rcbr #mkdo_rcbr_custom_redirect,
+#mkdo_rcbr_admin #mkdo_rcbr_custom_redirect {
 	width: 100%;
 	max-width: 800px;
+}
+
+#mkdo_rcbr_admin .warning {
+	background-color:red;
+	color:white;
+	padding: 0 2px 0 2px;
+	font-weight: normal;
 }
 
 /* Column Styles */

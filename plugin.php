@@ -6,8 +6,8 @@
  *
  * Plugin Name:       Restrict Content by Role
  * Plugin URI:        https://github.com/mkdo/restrict-content-by-role
- * Description:       Restrict users with certain User Roles from accessing certain peices of content and sub-content within the WordPress Dashboard (WP Admin).
- * Version:           1.2.0
+ * Description:       Restrict users with certain User Roles from accessing certain pieces of content and sub-content, both publicly and within the WordPress Dashboard (WP Admin).
+ * Version:           2.0.0
  * Author:            Make Do <hello@makedo.in>
  * Author URI:        http://www.makedo.in
  * License:           GPL-2.0+
@@ -24,28 +24,40 @@ define( 'MKDO_RCBR_TEXT_DOMAIN', 'restrict-content-by-role' );
 require_once "php/class.MainController.php";
 require_once "php/class.Options.php";
 require_once "php/class.AssetsController.php";
+require_once "php/class.AdminPermissionsMetaBox.php";
 require_once "php/class.PermissionsMetaBox.php";
 require_once "php/class.PermissionsColumn.php";
 require_once "php/class.LoginErrors.php";
 require_once "php/class.AccessController.php";
+require_once "php/class.MetaBoxController.php";
+require_once "php/class.AdminAccess.php";
+require_once "php/class.PublicAccess.php";
 
 // Use Namespaces
 use mkdo\restrict_content_by_role\MainController;
 use mkdo\restrict_content_by_role\Options;
 use mkdo\restrict_content_by_role\AssetsController;
+use mkdo\restrict_content_by_role\AdminPermissionsMetaBox;
 use mkdo\restrict_content_by_role\PermissionsMetaBox;
 use mkdo\restrict_content_by_role\PermissionsColumn;
 use mkdo\restrict_content_by_role\LoginErrors;
 use mkdo\restrict_content_by_role\AccessController;
+use mkdo\restrict_content_by_role\MetaBoxController;
+use mkdo\restrict_content_by_role\AdminAccess;
+use mkdo\restrict_content_by_role\PublicAccess;
 
 // Initialize Classes
-$options              = new Options();
-$assets_controller    = new AssetsController();
-$permissions_meta_box = new PermissionsMetaBox();
-$permissions_column   = new PermissionsColumn();
-$login_errors         = new LoginErrors();
-$access_controller    = new AccessController( $login_errors );
-$controller           = new MainController( $options, $assets_controller, $permissions_meta_box, $permissions_column, $access_controller );
+$options                    = new Options();
+$assets_controller          = new AssetsController();
+$admin_permissions_meta_box = new AdminPermissionsMetaBox();
+$permissions_meta_box       = new PermissionsMetaBox();
+$metabox_controller         = new MetaBoxController( $admin_permissions_meta_box, $permissions_meta_box );
+$permissions_column         = new PermissionsColumn();
+$login_errors               = new LoginErrors();
+$admin_access               = new AdminAccess();
+$public_access              = new PublicAccess( $login_errors );
+$access_controller          = new AccessController( $admin_access, $public_access );
+$controller                 = new MainController( $options, $assets_controller, $metabox_controller, $permissions_column, $access_controller );
 
 // Run the Plugin
 $controller->run();

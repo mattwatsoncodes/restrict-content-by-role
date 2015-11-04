@@ -33,15 +33,25 @@ class Options {
 
 		// Register Settings
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_post_types' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_admin_post_types' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_public_roles' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_admin_roles' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_admin_roles' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_restrict_message' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_redirect' );
 
 		// Add sections
-		add_settings_section( 'mkdo_rcbr_post_types_section', 'Choose Post Types', array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_post_types_section', 'Choose Public Post Types', array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_admin_post_types_section', 'Choose Admin Post Types', array( $this, 'mkdo_rcbr_admin_post_types_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_removed_public_roles_section', 'Public Access Roles', array( $this, 'mkdo_rcbr_removed_public_roles_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_removed_admin_roles_section', 'Admin Access Roles', array( $this, 'mkdo_rcbr_removed_admin_roles_section_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_default_restrict_message_section', 'Restrict Message', array( $this, 'mkdo_rcbr_default_restrict_message_section_cb' ), 'mkdo_rcbr_settings' );
 
     	// Add fields to a section
-		add_settings_field( 'mkdo_rcbr_post_types_select', 'Choose Post Types:', array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_post_types_select', 'Choose Public Post Types:', array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_admin_post_types_select', 'Choose Admin Post Types:', array( $this, 'mkdo_rcbr_admin_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_admin_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_removed_public_roles_select', 'Exclude Public Roles:', array( $this, 'mkdo_rcbr_removed_public_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_public_roles_section' );
+		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', 'Exclude Admin Roles:', array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
 		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 		add_settings_field( 'mkdo_rcbr_default_redirect', 'Redirect URL:', array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 	}
@@ -51,7 +61,34 @@ class Options {
 	 */
 	public function mkdo_rcbr_post_types_section_cb() {
 		echo '<p>';
-		esc_html_e( 'Select the Post Types that you wish to activate this plugin on.', MKDO_RCBR_TEXT_DOMAIN  );
+		esc_html_e( 'Select the Post Types that you wish to activate the Public Access meta box on.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the admin post_type section
+	 */
+	public function mkdo_rcbr_admin_post_types_section_cb() {
+		echo '<p>';
+		esc_html_e( 'Select the Post Types that you wish to activate the Admin Access meta box on.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the removed public roles section
+	 */
+	public function mkdo_rcbr_removed_public_roles_section_cb() {
+		echo '<p>';
+		esc_html_e( 'Check the user roles that you do not wish to be available for selection via the Public Access metabox.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the removed admin roles section
+	 */
+	public function mkdo_rcbr_removed_admin_roles_section_cb() {
+		echo '<p>';
+		esc_html_e( 'Check the user roles that you do not wish to be available for selection via the Admin Access metabox.', MKDO_RCBR_TEXT_DOMAIN  );
 		echo '</p>';
 	}
 
@@ -92,6 +129,114 @@ class Options {
 						<label>
 							<input type="checkbox" name="mkdo_rcbr_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
 							<?php echo $post_type_object->labels->name;?>
+						</label>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Call back for the admin post_type selector
+	 */
+	public function mkdo_rcbr_admin_post_types_select_cb() {
+
+		$post_type_args = array(
+			'public' => true,
+		);
+		$post_types           = get_post_types( $post_type_args );
+		$mkdo_rcbr_post_types = get_option( 'mkdo_rcbr_admin_post_types', array( 'page' ) );
+
+		unset( $post_types['attachment'] );
+
+		if ( ! is_array( $mkdo_rcbr_post_types ) ) {
+			$mkdo_rcbr_post_types = array();
+		}
+
+		?>
+		<div class="field field-checkbox field-post-types">
+			<ul class="field-input">
+				<?php
+				foreach ( $post_types as $key => $post_type ) {
+					$post_type_object = get_post_type_object( $post_type );
+					?>
+					<li>
+						<label>
+							<input type="checkbox" name="mkdo_rcbr_admin_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
+							<?php echo $post_type_object->labels->name;?>
+						</label>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Call back for the removed public roles selector
+	 */
+	public function mkdo_rcbr_removed_public_roles_select_cb() {
+
+		global $wp_roles;
+
+		$roles                          = $wp_roles->roles;
+		$mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles', array() );
+
+		if ( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {
+			$mkdo_rcbr_removed_public_roles = array();
+		}
+
+		?>
+		<div class="field field-checkbox field-removed-public-roles">
+			<ul class="field-input">
+				<?php
+				foreach ( $roles as $key => $role ) {
+					?>
+					<li>
+						<label>
+							<input type="checkbox" name="mkdo_rcbr_removed_public_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_removed_public_roles ) ) { echo ' checked="checked"'; } ?> />
+							<?php echo $role['name'];?>
+						</label>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Call back for the removed public roles selector
+	 */
+	public function mkdo_rcbr_removed_admin_roles_select_cb() {
+
+		global $wp_roles;
+
+		$roles                          = $wp_roles->roles;
+		$mkdo_rcbr_removed_admin_roles = get_option( 'mkdo_rcbr_removed_public_roles', array( 'administrator') );
+
+		unset( $roles['administrator'] );
+
+		if ( ! is_array( $mkdo_rcbr_removed_admin_roles ) ) {
+			$mkdo_rcbr_removed_admin_roles = array();
+		}
+
+		?>
+		<div class="field field-checkbox field-removed-admin-roles">
+			<ul class="field-input">
+				<?php
+				foreach ( $roles as $key => $role ) {
+					?>
+					<li>
+						<label>
+							<input type="checkbox" name="mkdo_rcbr_removed_admin_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_removed_admin_roles ) ) { echo ' checked="checked"'; } ?> />
+							<?php echo $role['name'];?>
 						</label>
 					</li>
 					<?php

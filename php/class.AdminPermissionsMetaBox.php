@@ -3,13 +3,13 @@
 namespace mkdo\restrict_content_by_role;
 
 /**
- * Class PermissionsMetaBox
+ * Class AdminPermissionsMetaBox
  *
- * Creates a Meta Box to set permissions on content
+ * Creates a Meta Box to set admin permissions on content
  *
  * @package mkdo\restrict_content_by_role
  */
-class PermissionsMetaBox {
+class AdminPermissionsMetaBox {
 
 	private $nonce_key;
 	private $nonce_action;
@@ -18,8 +18,8 @@ class PermissionsMetaBox {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->nonce_key    = 'restrict_content_by_role_nonce';
-		$this->nonce_action = 'restrict_content_by_role';
+		$this->nonce_key    = 'restrict_content_by_role_admin_nonce';
+		$this->nonce_action = 'restrict_content_by_role_admin';
 	}
 
 	/**
@@ -35,9 +35,9 @@ class PermissionsMetaBox {
 	 */
 	public function add_meta_box() {
 
-		$meta_box_id         = 'mkdo_rcbr';
-		$meta_box_title      = __( 'Public Access', MKDO_RCBR_TEXT_DOMAIN );
-		$meta_box_post_types = get_option( 'mkdo_rcbr_post_types', array( 'page' ) );
+		$meta_box_id         = 'mkdo_rcbr_admin';
+		$meta_box_title      = __( 'Admin Access', MKDO_RCBR_TEXT_DOMAIN );
+		$meta_box_post_types = get_option( 'mkdo_rcbr_admin_post_types', array( 'page' ) );
 		$meta_box_context    = 'normal';
 		$meta_box_priority   = 'low';
 
@@ -75,43 +75,42 @@ class PermissionsMetaBox {
 
 		global $wp_roles;
 
-		$is_restricted_by_parent        = false;
-		$parent_id                      = 0;
-		$roles                          = $wp_roles->roles;
-		$mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles', array() );
-		$mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
-		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
-		$mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
-		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
-		$is_hirachical                  = is_post_type_hierarchical( $post->post_type );
+		$is_restricted_by_parent              = false;
+		$parent_id                            = 0;
+		$roles                                = $wp_roles->roles;
+		$mkdo_rcbr_removed_admin_roles        = get_option( 'mkdo_rcbr_removed_admin_roles', array( 'administrator' ) );
+		$mkdo_rcbr_admin_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_admin_roles', true );
+		$mkdo_rcbr_restrict_admin_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_admin_sub_content', true );
+		$mkdo_rcbr_admin_override             = get_post_meta( $post->ID, '_mkdo_rcbr_admin_override', true );
+		$is_hirachical                        = is_post_type_hierarchical( $post->post_type );
 
-		if ( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {
-			$mkdo_rcbr_removed_public_roles = array();
+		if ( ! is_array( $mkdo_rcbr_removed_admin_roles ) ) {
+			$mkdo_rcbr_removed_admin_roles = array();
 		}
 
 		foreach( $roles as $key => $role ) {
-			if( in_array( $key, $mkdo_rcbr_removed_public_roles ) ) {
+			if( in_array( $key, $mkdo_rcbr_removed_admin_roles ) ) {
 				unset( $roles[ $key ] );
 			}
 		}
 
-		if ( ! is_array( $mkdo_rcbr_roles ) ) {
-			$mkdo_rcbr_roles = array();
+		if ( ! is_array( $mkdo_rcbr_admin_roles ) ) {
+			$mkdo_rcbr_admin_roles = array();
 		}
 
-		if ( empty( $mkdo_rcbr_restrict_sub_content ) ) {
-			$mkdo_rcbr_restrict_sub_content = 'content';
+		if ( empty( $mkdo_rcbr_restrict_admin_sub_content ) ) {
+			$mkdo_rcbr_restrict_admin_sub_content = 'content';
 		}
 
-		if ( empty( $mkdo_rcbr_override ) ) {
-			$mkdo_rcbr_override = 'none';
+		if ( empty( $mkdo_rcbr_admin_override ) ) {
+			$mkdo_rcbr_admin_override = 'none';
 		}
 
 		// Is this post inheriting parent restrictions?
 		if ( ! empty( $post->ancestors ) ) {
 			foreach ( $post->ancestors as $parent ) {
-				$parent_mkdo_rcbr_roles = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
-				if ( ! empty( $parent_mkdo_rcbr_roles ) ) {
+				$parent_mkdo_rcbr_admin_roles = get_post_meta( $parent, '_mkdo_rcbr_admin_roles', true );
+				if ( ! empty( $parent_mkdo_rcbr_admin_roles ) ) {
 					$is_restricted_by_parent = true;
 					$parent_id               = $parent;
 					break;
@@ -134,19 +133,19 @@ class PermissionsMetaBox {
 				<ul class="field-input">
 					<li>
 						<label>
-							<input type="radio" name="mkdo_rcbr_override" value="none" <?php if ( 'none' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
+							<input type="radio" name="mkdo_rcbr_admin_override" value="none" <?php if ( 'none' == $mkdo_rcbr_admin_override ) { echo ' checked="checked"'; } ?> />
 							<?php esc_html_e( 'No override', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
 					<li>
 						<label>
-							<input type="radio" name="mkdo_rcbr_override" value="public" <?php if ( 'public' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
+							<input type="radio" name="mkdo_rcbr_admin_override" value="public" <?php if ( 'public' == $mkdo_rcbr_admin_override ) { echo ' checked="checked"'; } ?> />
 							<?php esc_html_e( 'Grant Public Access (Override permissions set by parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
 					<li>
 						<label>
-							<input type="radio" name="mkdo_rcbr_override" value="override" <?php if ( 'override' == $mkdo_rcbr_override ) { echo ' checked="checked"'; } ?> />
+							<input type="radio" name="mkdo_rcbr_admin_override" value="override" <?php if ( 'override' == $mkdo_rcbr_admin_override ) { echo ' checked="checked"'; } ?> />
 							<?php esc_html_e( 'Set New Permissions (Override permissions set by parent)', MKDO_RCBR_TEXT_DOMAIN );?>
 						</label>
 					</li>
@@ -165,11 +164,12 @@ class PermissionsMetaBox {
 				<p class="field-description">
 					<?php
 					if( $is_hirachical ) {
-						esc_html_e( 'Choose the User Role(s) that can publicly view this content (or its sub content). If no roles are selected the content will be publicly accessible by everyone.', MKDO_RCBR_TEXT_DOMAIN );
+						esc_html_e( 'Choose the User Role(s) that can view this content (or its sub content) within `wp-admin`. If no roles are selected the content will not be restricted.', MKDO_RCBR_TEXT_DOMAIN );
 					} else {
-						esc_html_e( 'Choose the User Role(s) that can publicly view this content. If no roles are selected the content will be publicly accessible by everyone.', MKDO_RCBR_TEXT_DOMAIN );
+						esc_html_e( 'Choose the User Role(s) that can view this content within `wp-admin`. If no roles are selected the content will be not be restricted.', MKDO_RCBR_TEXT_DOMAIN );
 					}
 					?>
+					<?php printf( esc_html__( '%sNote:%s Administrators can view restricted content. You can select from the list below Administrator, and it will only be accessible to them.', MKDO_RDBR_TEXT_DOMAIN ), '<strong class="warning">', '</strong>' ); ?>
 				</p>
 				<?php if( count( $roles ) > 0 ) { ?>
 				<ul class="field-input">
@@ -178,7 +178,7 @@ class PermissionsMetaBox {
 						?>
 						<li>
 							<label>
-								<input type="checkbox" name="mkdo_rcbr_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_roles ) ) { echo ' checked="checked"'; } ?> />
+								<input type="checkbox" name="mkdo_rcbr_admin_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_admin_roles ) ) { echo ' checked="checked"'; } ?> />
 								<?php echo $role['name'];?>
 							</label>
 						</li>
@@ -204,43 +204,27 @@ class PermissionsMetaBox {
 					<ul class="field-input">
 						<li>
 							<label>
-								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="content" <?php if ( 'content' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<input type="radio" name="mkdo_rcbr_restrict_admin_sub_content" value="content" <?php if ( 'content' == $mkdo_rcbr_restrict_admin_sub_content ) { echo ' checked="checked"'; } ?> />
 								<?php esc_html_e( 'Restrict Access to Content Only', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 						<li>
 							<label>
-								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="all" <?php if ( 'all' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<input type="radio" name="mkdo_rcbr_restrict_admin_sub_content" value="all" <?php if ( 'all' == $mkdo_rcbr_restrict_admin_sub_content ) { echo ' checked="checked"'; } ?> />
 								<?php esc_html_e( 'Restrict Access to Content and Sub Content', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 						<li>
 							<label>
-								<input type="radio" name="mkdo_rcbr_restrict_sub_content" value="sub" <?php if ( 'sub' == $mkdo_rcbr_restrict_sub_content ) { echo ' checked="checked"'; } ?> />
+								<input type="radio" name="mkdo_rcbr_restrict_admin_sub_content" value="sub" <?php if ( 'sub' == $mkdo_rcbr_restrict_admin_sub_content ) { echo ' checked="checked"'; } ?> />
 								<?php esc_html_e( 'Restrict Access to Sub Content Only', MKDO_RCBR_TEXT_DOMAIN );?>
 							</label>
 						</li>
 					</ul>
 				</div>
 			<?php } else { ?>
-				<input type="hidden" name="mkdo_rcbr_restrict_sub_content" value="content" />
+				<input type="hidden" name="mkdo_rcbr_restrict_admin_sub_content" value="content" />
 			<?php }?>
-
-			<div class="field field-checkbox field-custom-redirect">
-				<p class="field-title">
-					<label for="mkdo_rcbr_custom_redirect">
-						<?php esc_html_e( 'Custom Redirect', MKDO_RCBR_TEXT_DOMAIN );?>
-					</label>
-				</p>
-				<p class="field-description">
-					<?php esc_html_e( 'Enter the full URL that you wish restricted users to redirect to. (Leave blank to use default redirect settings).', MKDO_RCBR_TEXT_DOMAIN );?>
-				</p>
-				<ul class="field-input">
-					<li>
-						<input type="text" name="mkdo_rcbr_custom_redirect" id="mkdo_rcbr_custom_redirect" placeholder="http://example.com/content/" value="<?php echo $mkdo_rcbr_custom_redirect;?>" />
-					</li>
-				</ul>
-			</div>
 
 		</div> <!-- / field-group field-group-override -->
 
@@ -277,26 +261,23 @@ class PermissionsMetaBox {
 			return $post_id;
 		}
 
-		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
-		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
-		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  sanitize_url( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
-		$mkdo_rcbr_override    		    = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
+		$mkdo_rcbr_admin_roles                = isset( $_POST['mkdo_rcbr_admin_roles'] )                ?  $_POST['mkdo_rcbr_admin_roles'] : array();
+		$mkdo_rcbr_restrict_admin_sub_content = isset( $_POST['mkdo_rcbr_restrict_admin_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_admin_sub_content'] ) : 'content';
+		$mkdo_rcbr_admin_override             = isset( $_POST['mkdo_rcbr_admin_override'] )                   ?  sanitize_text_field( $_POST['mkdo_rcbr_admin_override'] ) : null;
 
-		foreach ( $mkdo_rcbr_roles as &$role ) {
+		foreach ( $mkdo_rcbr_admin_roles as &$role ) {
 			$role = sanitize_text_field( $role );
 		}
 
 		// If we are not overriding, get rid of the overrides
-		if ( ! empty( $mkdo_rcbr_override ) && 'override' != $mkdo_rcbr_override ) {
-			$mkdo_rcbr_roles                = array();
-			$mkdo_rcbr_restrict_sub_content = 'content';
-			$mkdo_rcbr_custom_redirect      = null;
+		if ( ! empty( $mkdo_rcbr_admin_override ) && 'override' != $mkdo_rcbr_admin_override ) {
+			$mkdo_rcbr_admin_roles                = array();
+			$mkdo_rcbr_restrict_admin_sub_content = 'content';
 		}
 
-		update_post_meta( $post_id, '_mkdo_rcbr_roles', $mkdo_rcbr_roles );
-		update_post_meta( $post_id, '_mkdo_rcbr_restrict_sub_content', $mkdo_rcbr_restrict_sub_content );
-		update_post_meta( $post_id, '_mkdo_rcbr_custom_redirect', $mkdo_rcbr_custom_redirect );
-		update_post_meta( $post_id, '_mkdo_rcbr_override', $mkdo_rcbr_override );
+		update_post_meta( $post_id, '_mkdo_rcbr_admin_roles', $mkdo_rcbr_admin_roles );
+		update_post_meta( $post_id, '_mkdo_rcbr_restrict_admin_sub_content', $mkdo_rcbr_restrict_admin_sub_content );
+		update_post_meta( $post_id, '_mkdo_rcbr_admin_override', $mkdo_rcbr_admin_override );
 
 	}
 }
