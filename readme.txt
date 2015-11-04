@@ -41,7 +41,9 @@ If you are using this plugin in your project [we would love to hear about it](ma
 1. Meta Box to set permissions on hierarchical content
 2. Meta Box on sub-content, showing override options
 3. Meta Box on sub-content, overriding parent permissions
-4. Options page
+4. Options page (more options available)
+5. Meta box to set admin permissions on hierarchical content
+6. After admin permission set, an editor can no longer see the page in the admin panel
 
 == Changelog ==
 
