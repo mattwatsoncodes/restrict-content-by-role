@@ -221,8 +221,6 @@ class Options {
 		$roles                          = $wp_roles->roles;
 		$mkdo_rcbr_removed_admin_roles = get_option( 'mkdo_rcbr_removed_public_roles', array( 'administrator') );
 
-		unset( $roles['administrator'] );
-
 		if ( ! is_array( $mkdo_rcbr_removed_admin_roles ) ) {
 			$mkdo_rcbr_removed_admin_roles = array();
 		}

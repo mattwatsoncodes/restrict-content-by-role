@@ -28,7 +28,14 @@ class AdminAccess {
 	public function run() {
 		add_action( 'admin_init', array( $this, 'get_excluded_posts' ) );
 		add_action( 'pre_get_posts', array( $this, 'update_post_list_access' ) );
-		add_filter( 'wp_count_posts', array( $this, 'update_post_list_count') );
+		add_filter( 'wp_count_posts', array( $this, 'update_post_list_count' ) );
+		add_filter( 'get_pages', array( $this, 'update_tree_view_post_list_access' ), 0, 2 );
+
+		// TODO:
+		// This needs a better soloution. If the dropdown is restricted
+		// when saved it will simply revert to having a parent at root
+		// 
+		// add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'update_parent_dropdown' ), 0, 2 );
 	}
 
 	/**
@@ -53,32 +60,37 @@ class AdminAccess {
 						exit;
 					}
 				}
+			}
 
-			// If we are on the post list, hide the ones that we do not have access to
-			} else if( $pagenow == 'edit.php' ){
+			// Get all post statuses
+			$stati = get_post_stati();
 
-				$stati = get_post_stati();
+			// We dont want to work with auto-draft
+			unset( $stati['auto-draft'] );
 
-				unset( $stati['auto-draft'] );
+			// If the current post type is empty, check all post types
+			if( empty( $typenow ) ) {
+				$typenow = 'any';
+			}
 
-				$args = array(
-				   'posts_per_page' => -1,
-				   'post_type'      => $typenow,
-				   'post_status'    => $stati
-				);
+			$args = array(
+			   'posts_per_page' => -1,
+			   'post_type'      => $typenow,
+			   'post_status'    => $stati
+			);
 
-				$posts = get_posts( $args );
+			$posts = get_posts( $args );
 
-				foreach( $posts as $post ) {
+			foreach( $posts as $post ) {
 
-					$has_access = $this->user_can_access_post( $post );
+				$has_access = $this->user_can_access_post( $post );
 
-					// If the user does not have access, redirect them
-					if ( ! $has_access ) {
-						$this->excluded_posts[] = $post->ID;
-					}
+				// If the user does not have access, redirect them
+				if ( ! $has_access ) {
+					$this->excluded_posts[] = $post->ID;
 				}
 			}
+
 		}
 	}
 
@@ -185,5 +197,33 @@ class AdminAccess {
 		}
 
 		return $counts;
+	}
+
+	/**
+	 * Update the post list access within the Page Tree View plugin to show only the posts we have access to
+	 */
+	public function update_tree_view_post_list_access( $pages, $get_posts_args ) {
+
+		$backtrace = debug_backtrace();
+
+		// If the function that called it is 'cms_tpv_get_pages', then filter the posts
+		if( is_admin() && isset( $backtrace[3] ) && isset( $backtrace[3]['function'] ) && 'cms_tpv_get_pages' == $backtrace[3]['function'] ) {
+			$get_posts_args['post__not_in'] = $this->excluded_posts;
+			$pages = get_posts( $get_posts_args );
+		}
+
+	    return $pages;
+	}
+
+	/**
+	 * Update the parent drop down list to show only posts the user can access
+	 */
+	public function update_parent_dropdown( $dropdown_args, $post ) {
+
+		if( is_admin() ) {
+			$dropdown_args['exclude'] = implode( ',', $this->excluded_posts );
+		}
+
+		return $dropdown_args;
 	}
 }

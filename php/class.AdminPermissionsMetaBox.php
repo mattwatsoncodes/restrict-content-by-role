@@ -169,7 +169,7 @@ class AdminPermissionsMetaBox {
 						esc_html_e( 'Choose the User Role(s) that can view this content within `wp-admin`. If no roles are selected the content will be not be restricted.', MKDO_RCBR_TEXT_DOMAIN );
 					}
 					?>
-					<?php printf( esc_html__( '%sNote:%s Administrators can view restricted content. You can select from the list below Administrator, and it will only be accessible to them.', MKDO_RDBR_TEXT_DOMAIN ), '<strong class="warning">', '</strong>' ); ?>
+					<?php printf( esc_html__( '%sNote:%s Administrators can view restricted content. You can select from the list below Administrator, and it will only be accessible to them.', MKDO_RCBR_TEXT_DOMAIN ), '<strong class="warning">', '</strong>' ); ?>
 				</p>
 				<?php if( count( $roles ) > 0 ) { ?>
 				<ul class="field-input">
