@@ -34,7 +34,11 @@ class AdminAccess {
 		// TODO:
 		// This needs a better soloution. If the dropdown is restricted
 		// when saved it will simply revert to having a parent at root
-		// 
+		//
+		// A soloution might be to use the 'get_pages' filter to check
+		// for the post, and if the page is a child of a restricted post,
+		// remove the meta box
+		//
 		// add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'update_parent_dropdown' ), 0, 2 );
 	}
 
