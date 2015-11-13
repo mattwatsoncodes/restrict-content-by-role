@@ -75,9 +75,9 @@ class AdminPermissionsMetaBox {
 
 		global $wp_roles;
 
+		$roles                                = $wp_roles->roles;
 		$is_restricted_by_parent              = false;
 		$parent_id                            = 0;
-		$roles                                = $wp_roles->roles;
 		$mkdo_rcbr_removed_admin_roles        = get_option( 'mkdo_rcbr_removed_admin_roles', array( 'administrator' ) );
 		$mkdo_rcbr_admin_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_admin_roles', true );
 		$mkdo_rcbr_restrict_admin_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_admin_sub_content', true );
@@ -94,8 +94,14 @@ class AdminPermissionsMetaBox {
 			}
 		}
 
-		if ( ! is_array( $mkdo_rcbr_admin_roles ) ) {
+		if ( ! is_array( $mkdo_rcbr_admin_roles ) || empty( $mkdo_rcbr_admin_roles ) ) {
 			$mkdo_rcbr_admin_roles = array();
+			$default_roles         = array_keys( $wp_roles->roles );
+			foreach( $default_roles as $role ) {
+				$mkdo_rcbr_admin_roles[$role] = $role;
+			}
+		} else {
+			$mkdo_rcbr_admin_roles[] = 'administrator';
 		}
 
 		if ( empty( $mkdo_rcbr_restrict_admin_sub_content ) ) {
@@ -163,13 +169,8 @@ class AdminPermissionsMetaBox {
 				</p>
 				<p class="field-description">
 					<?php
-					if( $is_hirachical ) {
-						esc_html_e( 'Choose the User Role(s) that can view this content (or its sub content) within `wp-admin`. If no roles are selected the content will not be restricted.', MKDO_RCBR_TEXT_DOMAIN );
-					} else {
-						esc_html_e( 'Choose the User Role(s) that can view this content within `wp-admin`. If no roles are selected the content will be not be restricted.', MKDO_RCBR_TEXT_DOMAIN );
-					}
+						printf( esc_html__( 'Choose the User Role(s) that you wish to restrict. %sNote:%s You cannot restrict administrators.', MKDO_RCBR_TEXT_DOMAIN ), '<strong>', '</strong>' );
 					?>
-					<?php printf( esc_html__( '%sNote:%s Administrators can view restricted content. You can select from the list below Administrator, and it will only be accessible to them.', MKDO_RCBR_TEXT_DOMAIN ), '<strong class="warning">', '</strong>' ); ?>
 				</p>
 				<?php if( count( $roles ) > 0 ) { ?>
 				<ul class="field-input">
@@ -178,7 +179,7 @@ class AdminPermissionsMetaBox {
 						?>
 						<li>
 							<label>
-								<input type="checkbox" name="mkdo_rcbr_admin_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_admin_roles ) ) { echo ' checked="checked"'; } ?> />
+								<input type="checkbox" name="mkdo_rcbr_admin_roles[]" value="<?php echo $key; ?>" <?php if ( ! in_array( $key, $mkdo_rcbr_admin_roles ) ) { echo ' checked="checked"'; } ?><?php echo $key == 'administrator' ? ' disabled="disabled"' : '';?> />
 								<?php echo $role['name'];?>
 							</label>
 						</li>
@@ -241,6 +242,8 @@ class AdminPermissionsMetaBox {
 	 */
 	public function save_meta_box( $post_id ) {
 
+		global $wp_roles;
+
 		// If it is just a revision don't worry about it
 		if ( wp_is_post_revision( $post_id ) ) {
 			return $post_id;
@@ -261,9 +264,10 @@ class AdminPermissionsMetaBox {
 			return $post_id;
 		}
 
+		$all_roles                            = array_keys( $wp_roles->roles );
 		$mkdo_rcbr_admin_roles                = isset( $_POST['mkdo_rcbr_admin_roles'] )                ?  $_POST['mkdo_rcbr_admin_roles'] : array();
 		$mkdo_rcbr_restrict_admin_sub_content = isset( $_POST['mkdo_rcbr_restrict_admin_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_admin_sub_content'] ) : 'content';
-		$mkdo_rcbr_admin_override             = isset( $_POST['mkdo_rcbr_admin_override'] )                   ?  sanitize_text_field( $_POST['mkdo_rcbr_admin_override'] ) : null;
+		$mkdo_rcbr_admin_override             = isset( $_POST['mkdo_rcbr_admin_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_admin_override'] ) : null;
 
 		foreach ( $mkdo_rcbr_admin_roles as &$role ) {
 			$role = sanitize_text_field( $role );
@@ -275,7 +279,11 @@ class AdminPermissionsMetaBox {
 			$mkdo_rcbr_restrict_admin_sub_content = 'content';
 		}
 
-		update_post_meta( $post_id, '_mkdo_rcbr_admin_roles', $mkdo_rcbr_admin_roles );
+		$checked_roles = array_diff( $all_roles, $mkdo_rcbr_admin_roles );
+
+		$checked_roles[] = 'administrator';
+
+		update_post_meta( $post_id, '_mkdo_rcbr_admin_roles', $checked_roles );
 		update_post_meta( $post_id, '_mkdo_rcbr_restrict_admin_sub_content', $mkdo_rcbr_restrict_admin_sub_content );
 		update_post_meta( $post_id, '_mkdo_rcbr_admin_override', $mkdo_rcbr_admin_override );
 

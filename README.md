@@ -28,6 +28,7 @@ The plugin provides the following functionality:
 
 ## Changelog
 
+**3.0.0** - *12.11.2015* - Switched the way the meta box checkboxes work, so that they are more intuitive  
 **2.1.0** - *12.11.2015* - Now works with the CMS Tree Page View plugin
 **2.0.0** - *03.11.2015* - The plugin can now restrict access to content on within wp-admin.  
 **2.0.0** - *03.11.2015* - You can now select which roles are shown in the custom meta box.  

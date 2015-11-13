@@ -95,8 +95,12 @@ class PermissionsMetaBox {
 			}
 		}
 
-		if ( ! is_array( $mkdo_rcbr_roles ) ) {
+		if ( ! is_array( $mkdo_rcbr_roles ) || empty( $mkdo_rcbr_roles ) ) {
 			$mkdo_rcbr_roles = array();
+			$default_roles         = array_keys( $wp_roles->roles );
+			foreach( $default_roles as $role ) {
+				$mkdo_rcbr_roles[$role] = $role;
+			}
 		}
 
 		if ( empty( $mkdo_rcbr_restrict_sub_content ) ) {
@@ -164,11 +168,7 @@ class PermissionsMetaBox {
 				</p>
 				<p class="field-description">
 					<?php
-					if( $is_hirachical ) {
-						esc_html_e( 'Choose the User Role(s) that can publicly view this content (or its sub content). If no roles are selected the content will be publicly accessible by everyone.', MKDO_RCBR_TEXT_DOMAIN );
-					} else {
-						esc_html_e( 'Choose the User Role(s) that can publicly view this content. If no roles are selected the content will be publicly accessible by everyone.', MKDO_RCBR_TEXT_DOMAIN );
-					}
+						esc_html_e( 'Choose the User Role(s) that you wish to restrict.', MKDO_RCBR_TEXT_DOMAIN );
 					?>
 				</p>
 				<?php if( count( $roles ) > 0 ) { ?>
@@ -178,7 +178,7 @@ class PermissionsMetaBox {
 						?>
 						<li>
 							<label>
-								<input type="checkbox" name="mkdo_rcbr_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_roles ) ) { echo ' checked="checked"'; } ?> />
+								<input type="checkbox" name="mkdo_rcbr_roles[]" value="<?php echo $key; ?>" <?php if ( ! in_array( $key, $mkdo_rcbr_roles ) ) { echo ' checked="checked"'; } ?> />
 								<?php echo $role['name'];?>
 							</label>
 						</li>
@@ -257,6 +257,8 @@ class PermissionsMetaBox {
 	 */
 	public function save_meta_box( $post_id ) {
 
+		global $wp_roles;
+
 		// If it is just a revision don't worry about it
 		if ( wp_is_post_revision( $post_id ) ) {
 			return $post_id;
@@ -277,10 +279,11 @@ class PermissionsMetaBox {
 			return $post_id;
 		}
 
+		$all_roles                      = array_keys( $wp_roles->roles );
 		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
 		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
 		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  sanitize_url( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
-		$mkdo_rcbr_override    		    = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
+		$mkdo_rcbr_override             = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
 
 		foreach ( $mkdo_rcbr_roles as &$role ) {
 			$role = sanitize_text_field( $role );
@@ -293,7 +296,9 @@ class PermissionsMetaBox {
 			$mkdo_rcbr_custom_redirect      = null;
 		}
 
-		update_post_meta( $post_id, '_mkdo_rcbr_roles', $mkdo_rcbr_roles );
+		$checked_roles = array_diff( $all_roles, $mkdo_rcbr_roles );
+
+		update_post_meta( $post_id, '_mkdo_rcbr_roles', $checked_roles );
 		update_post_meta( $post_id, '_mkdo_rcbr_restrict_sub_content', $mkdo_rcbr_restrict_sub_content );
 		update_post_meta( $post_id, '_mkdo_rcbr_custom_redirect', $mkdo_rcbr_custom_redirect );
 		update_post_meta( $post_id, '_mkdo_rcbr_override', $mkdo_rcbr_override );
