@@ -27,6 +27,7 @@ The plugin provides the following functionality:
  * Choose the roles that will appear in the meta box to be restricted
  * Define a login screen error message (if no custom redirect URL is set)
  * Set a custom redirect URL
+ * Prevent users from adding child content to restricted content
 
 If you are using this plugin in your project [we would love to hear about it](mailto:hello@makedo.in).
 
