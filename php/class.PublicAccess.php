@@ -120,6 +120,10 @@ class PublicAccess {
 					$redirect_url = $mkdo_rcbr_custom_redirect;
 				}
 
+				if( $redirect_to_referrer && isset( $_SERVER['HTTP_REFERER'] ) ) {
+					$redirect_url = $_SERVER['HTTP_REFERER'];
+				}
+
 				wp_redirect( $redirect_url, 302 );
 				exit;
 			}

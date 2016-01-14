@@ -60,16 +60,23 @@ class PermissionsColumn {
 	 */
 	public function add_column_content( $column, $post_id ) {
 
-		global $post;
+		global $post, $wp_roles;
 
 		switch ( $column ) {
 			case 'mkdo_rcbr_access' :
 				$icon_rendered                  = false;
 				$found_action                   = false;
 
+				$all_roles                      = array_keys( $wp_roles->roles );
 				$mkdo_rcbr_roles                = get_post_meta( $post_id, '_mkdo_rcbr_roles', true );
 				$mkdo_rcbr_override             = get_post_meta( $post_id, '_mkdo_rcbr_override', true );
 				$mkdo_rcbr_restrict_sub_content = get_post_meta( $post_id, '_mkdo_rcbr_restrict_sub_content', true );
+
+				if( ! is_array( $mkdo_rcbr_roles ) ) {
+					$mkdo_rcbr_roles = array();
+				}
+
+				$checked_roles                  = array_diff( $all_roles, $mkdo_rcbr_roles );
 
 				// If content has been overridden
 				if ( 'public' == $mkdo_rcbr_override ) {
@@ -82,7 +89,7 @@ class PermissionsColumn {
 					<?php
 
 				// If content has permissions set
-				} else if ( ! empty( $mkdo_rcbr_roles ) ) {
+			} else if ( ! empty( $checked_roles ) ) {
 
 					if ( 'content' == $mkdo_rcbr_restrict_sub_content ) {
 						$icon_rendered = true;

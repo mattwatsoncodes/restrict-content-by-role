@@ -95,13 +95,15 @@ class PermissionsMetaBox {
 			}
 		}
 
-		if ( ! is_array( $mkdo_rcbr_roles ) || empty( $mkdo_rcbr_roles ) ) {
+		if ( ! is_array( $mkdo_rcbr_roles ) ) {
 			$mkdo_rcbr_roles = array();
-			$default_roles         = array_keys( $wp_roles->roles );
+			$default_roles   = array_keys( $wp_roles->roles );
 			foreach( $default_roles as $role ) {
 				$mkdo_rcbr_roles[$role] = $role;
 			}
 		}
+
+		//print_r($mkdo_rcbr_roles);
 
 		if ( empty( $mkdo_rcbr_restrict_sub_content ) ) {
 			$mkdo_rcbr_restrict_sub_content = 'content';
@@ -282,7 +284,7 @@ class PermissionsMetaBox {
 		$all_roles                      = array_keys( $wp_roles->roles );
 		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
 		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
-		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  sanitize_url( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
+		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  esc_url_raw( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
 		$mkdo_rcbr_override             = isset( $_POST['mkdo_rcbr_override'] )             ?  sanitize_text_field( $_POST['mkdo_rcbr_override'] ) : null;
 
 		foreach ( $mkdo_rcbr_roles as &$role ) {

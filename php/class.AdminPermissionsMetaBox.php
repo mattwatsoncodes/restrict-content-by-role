@@ -94,7 +94,7 @@ class AdminPermissionsMetaBox {
 			}
 		}
 
-		if ( ! is_array( $mkdo_rcbr_admin_roles ) || empty( $mkdo_rcbr_admin_roles ) ) {
+		if ( ! is_array( $mkdo_rcbr_admin_roles ) ) {
 			$mkdo_rcbr_admin_roles = array();
 			$default_roles         = array_keys( $wp_roles->roles );
 			foreach( $default_roles as $role ) {

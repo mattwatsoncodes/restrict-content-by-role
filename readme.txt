@@ -2,13 +2,13 @@
 Contributors: mkdo, mwtsn
 Donate link:
 Tags: restrict, restrict content, lockdown, lockdown content, pages, lockdown pages, management, manage pages, manage user roles, manage users, manage roles, user, roles, permissions, manage page permissions, manage content permissions, manage permissions, manage sub page permissions
-Requires at least: 4.3
-Tested up to: 4.3
+Requires at least: 4.4
+Tested up to: 4.4
 Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Restrict users with certain User Roles from accessing certain pieces of content and sub-content, both publicly and within the WordPress Dashboard (WP Admin).
+Restrict users with certain User Roles from accessing content and sub-content, both publicly and within the WordPress Dashboard (wp-admin).
 
 == Description ==
 
@@ -21,6 +21,7 @@ The plugin provides the following functionality:
 * An option to allow content, content and sub-content or just sub content to be restricted
 * An option to allow a custom redirect URL (overriding default redirect URL settings)
 * The ability to override parent content restrictions on sub-content (including the ability to make it public)
+* Works with the CMS Tree Page View plugin
 * An options page, with the following options:
  * Choose post types that the meta box should appear on
  * Choose the roles that will appear in the meta box to be restricted
@@ -47,8 +48,11 @@ If you are using this plugin in your project [we would love to hear about it](ma
 
 == Changelog ==
 
+= 3.0.1 =
+* Fixed bug where new pages would be locked out.
+
 = 3.0.0 =
-* Switched the way the meta box checkboxes work, so that they are more intuitive. 
+* Switched the way the meta box checkboxes work, so that they are more intuitive.
 
 = 2.1.0 =
 * Now works with the CMS Tree Page View plugin
