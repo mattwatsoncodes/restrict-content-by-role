@@ -36,7 +36,7 @@ class Options {
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_admin_post_types' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_public_roles' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_admin_roles' );
-		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_removed_admin_roles' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_prevent_restricted_child' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_restrict_message' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_redirect' );
 
@@ -45,6 +45,7 @@ class Options {
 		add_settings_section( 'mkdo_rcbr_admin_post_types_section', 'Choose Admin Post Types', array( $this, 'mkdo_rcbr_admin_post_types_section_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_removed_public_roles_section', 'Public Access Roles', array( $this, 'mkdo_rcbr_removed_public_roles_section_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_removed_admin_roles_section', 'Admin Access Roles', array( $this, 'mkdo_rcbr_removed_admin_roles_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_prevent_restricted_child', 'Prevent Restricted Content Child Pages', array( $this, 'mkdo_rcbr_prevent_restricted_child_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_default_restrict_message_section', 'Restrict Message', array( $this, 'mkdo_rcbr_default_restrict_message_section_cb' ), 'mkdo_rcbr_settings' );
 
     	// Add fields to a section
@@ -52,6 +53,7 @@ class Options {
 		add_settings_field( 'mkdo_rcbr_admin_post_types_select', 'Choose Admin Post Types:', array( $this, 'mkdo_rcbr_admin_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_admin_post_types_section' );
 		add_settings_field( 'mkdo_rcbr_removed_public_roles_select', 'Exclude Public Roles:', array( $this, 'mkdo_rcbr_removed_public_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_public_roles_section' );
 		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', 'Exclude Admin Roles:', array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
+		add_settings_field( 'mkdo_rcbr_prevent_restricted_child_select', 'Prevent Child Pages:', array( $this, 'mkdo_rcbr_prevent_restricted_child_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_prevent_restricted_child' );
 		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 		add_settings_field( 'mkdo_rcbr_default_redirect', 'Redirect URL:', array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 	}
@@ -89,6 +91,15 @@ class Options {
 	public function mkdo_rcbr_removed_admin_roles_section_cb() {
 		echo '<p>';
 		esc_html_e( 'Check the user roles that you do not wish to be available for selection via the Admin Access metabox.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the prevent child section
+	 */
+	public function mkdo_rcbr_prevent_restricted_child_cb() {
+		echo '<p>';
+		esc_html_e( 'Check the box to prevent users from adding child pages to content that they are restricted from editing', MKDO_RCBR_TEXT_DOMAIN  );
 		echo '</p>';
 	}
 
@@ -242,6 +253,29 @@ class Options {
 				?>
 			</ul>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Call back for the restrict message field
+	 */
+	public function mkdo_rcbr_prevent_restricted_child_select_cb() {
+
+		$mkdo_rcbr_prevent_restricted_child = get_option( 'mkdo_rcbr_prevent_restricted_child', false );
+
+		?>
+
+		<div class="field field-checkbox field-restricted-child">
+			<ul class="field-input">
+				<li>
+					<label>
+						<input type="checkbox" name="mkdo_rcbr_prevent_restricted_child" value="1" <?php if ( $mkdo_rcbr_prevent_restricted_child ) { echo ' checked="checked"'; } ?> />
+						Restrict child pages under restricted content
+					</label>
+				</li>
+			</ul>
+		</div>
+
 		<?php
 	}
 

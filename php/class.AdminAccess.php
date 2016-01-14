@@ -30,16 +30,9 @@ class AdminAccess {
 		add_action( 'pre_get_posts', array( $this, 'update_post_list_access' ) );
 		add_filter( 'wp_count_posts', array( $this, 'update_post_list_count' ) );
 		add_filter( 'get_pages', array( $this, 'update_tree_view_post_list_access' ), 0, 2 );
+		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'update_parent_dropdown' ), 0, 2 );
+		add_filter( 'wp_insert_post_data' , array( $this, 'user_can_update_child_pages' ) , '0', 2 );
 
-		// TODO:
-		// This needs a better soloution. If the dropdown is restricted
-		// when saved it will simply revert to having a parent at root
-		//
-		// A soloution might be to use the 'get_pages' filter to check
-		// for the post, and if the page is a child of a restricted post,
-		// remove the meta box
-		//
-		// add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'update_parent_dropdown' ), 0, 2 );
 	}
 
 	/**
@@ -83,15 +76,15 @@ class AdminAccess {
 			   'post_status'    => $stati
 			);
 
-			$posts = get_posts( $args );
+			$excluded_posts = get_posts( $args );
 
-			foreach( $posts as $post ) {
+			foreach( $excluded_posts as $excluded_post ) {
 
-				$has_access = $this->user_can_access_post( $post );
+				$has_access = $this->user_can_access_post( $excluded_post );
 
 				// If the user does not have access, redirect them
 				if ( ! $has_access ) {
-					$this->excluded_posts[] = $post->ID;
+					$this->excluded_posts[] = $excluded_post->ID;
 				}
 			}
 
@@ -224,10 +217,56 @@ class AdminAccess {
 	 */
 	public function update_parent_dropdown( $dropdown_args, $post ) {
 
-		if( is_admin() ) {
-			$dropdown_args['exclude'] = implode( ',', $this->excluded_posts );
+		$mkdo_rcbr_prevent_restricted_child = get_option( 'mkdo_rcbr_prevent_restricted_child', false );
+
+		if( $mkdo_rcbr_prevent_restricted_child ) {
+			$excluded_posts  = $this->excluded_posts;
+			$include_parents = get_post_ancestors( $post );
+
+			if( is_array( $include_parents ) ) {
+				foreach( $include_parents as $parent ) {
+					if( ( $key = array_search( $parent, $excluded_posts ) ) !== false ) {
+					    unset( $excluded_posts[ $key ] );
+					}
+				}
+			}
+
+			if( is_admin() ) {
+				$dropdown_args['exclude'] = implode( ',', $excluded_posts );
+			}
 		}
 
 		return $dropdown_args;
+	}
+
+	/**
+	 * Warn user if they cannot update child pages
+	 */
+	public function user_can_update_child_pages( $data , $postarr ) {
+
+		$mkdo_rcbr_prevent_restricted_child = get_option( 'mkdo_rcbr_prevent_restricted_child', false );
+
+		if( $mkdo_rcbr_prevent_restricted_child ) {
+
+		    $post = get_post();
+		    $old_parent = $post->post_parent;
+		    $new_parent = $data['post_parent'];
+
+		    if( $old_parent != $new_parent ) {
+
+				$parent = get_post( $new_parent );
+
+				if( ! $this->user_can_access_post( $parent ) ) {
+		        	$data['post_parent'] = $old_parent;
+					$message = '';
+					$message .= __( sprintf( '%sWarning%s', '<h1>', '</h1>' ), MKDO_RCBR_TEXT_DOMAIN );
+					$message .= __( sprintf( '%sYou do not have permission to add content under the selected parent.%s', '<p>', '</p>' ) , MKDO_RCBR_TEXT_DOMAIN );
+					$message .= __( sprintf( '%sBack to previous page%s', '<p><a href="' . get_edit_post_link( $post ) . '">', '</a></p>' ) , MKDO_RCBR_TEXT_DOMAIN );
+					wp_die( $message );
+				}
+		    }
+		}
+
+	    return $data;
 	}
 }
