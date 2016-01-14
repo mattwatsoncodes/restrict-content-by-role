@@ -28,7 +28,7 @@ The plugin provides the following functionality:
 
 ## Changelog
 
-**3.0.1** - *14.01.2016* - New option to prevent users adding child pages to restricted pages.  
+**3.1.0** - *14.01.2016* - New option to prevent users adding child pages to restricted pages.  
 **3.0.1** - *14.01.2016* - Fixed bug where new pages would be locked out.  
 **3.0.0** - *12.11.2015* - Switched the way the meta box checkboxes work, so that they are more intuitive.  
 **2.1.0** - *12.11.2015* - Now works with the CMS Tree Page View plugin.  
