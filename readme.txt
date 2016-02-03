@@ -4,7 +4,7 @@ Donate link:
 Tags: restrict, restrict content, lockdown, lockdown content, pages, lockdown pages, management, manage pages, manage user roles, manage users, manage roles, user, roles, permissions, manage page permissions, manage content permissions, manage permissions, manage sub page permissions
 Requires at least: 4.4
 Tested up to: 4.4
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ If you are using this plugin in your project [we would love to hear about it](ma
 6. After admin permission set, an editor can no longer see the page in the admin panel
 
 == Changelog ==
+
+= 3.1.1 =
+* Bug fix - sometimes new pages were automatically locked.
 
 = 3.1.0 =
 * New option to prevent users adding child pages to restricted pages.

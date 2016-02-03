@@ -58,7 +58,7 @@ class PublicAccess {
 			if ( 'public' != $mkdo_rcbr_override ) {
 
 				// If it has roles, determine if it should do a redirect
-				if ( ! empty( $mkdo_rcbr_roles ) ) {
+				if ( empty( $mkdo_rcbr_roles ) ) {
 
 					if ( 'content' == $mkdo_rcbr_restrict_sub_content || 'all' == $mkdo_rcbr_restrict_sub_content ) {
 						$do_redirect = true;
@@ -73,7 +73,7 @@ class PublicAccess {
 						$mkdo_rcbr_restrict_sub_content = '';
 						$mkdo_rcbr_custom_redirect       = '';
 
-						if ( ! empty( $mkdo_rcbr_roles ) || 'public' == $mkdo_rcbr_override ) {
+						if ( empty( $mkdo_rcbr_roles ) || 'public' == $mkdo_rcbr_override ) {
 
 							// If parent is public, no redirect
 							if ( 'public' == $mkdo_rcbr_override ) {
