@@ -28,6 +28,7 @@ The plugin provides the following functionality:
 
 ## Changelog
 
+**3.1.2** - *03.02.2016* - Bug fix - better fix for auto-locking pages.  
 **3.1.1** - *03.02.2016* - Bug fix - sometimes new pages were automatically locked.  
 **3.1.0** - *14.01.2016* - New option to prevent users adding child pages to restricted pages.  
 **3.0.1** - *14.01.2016* - Fixed bug where new pages would be locked out.  

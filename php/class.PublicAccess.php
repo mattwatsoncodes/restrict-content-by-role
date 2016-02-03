@@ -35,20 +35,31 @@ class PublicAccess {
 	 */
 	public function access_control() {
 
-		global $post;
+		global $post, $wp_roles;
 
 		if ( ! is_admin() && ( is_single() || is_singular() ) ) {
 
-			$current_user                   = wp_get_current_user();
-			$roles                          = $current_user->roles;
-			$redirect_url                   = wp_login_url ( '', false ) . '?error="mkdo-rcbr-no-access"';
-			$do_redirect                    = false;
-			$has_access                     = false;
-			$mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
-			$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
-			$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
-			$mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
-			$mkdo_rcbr_default_redirect     = get_option( 'mkdo_rcbr_default_redirect' );
+            $current_user                   = wp_get_current_user();
+            $roles                          = $current_user->roles;
+            $redirect_url                   = wp_login_url ( '', false ) . '?error="mkdo-rcbr-no-access"';
+            $do_redirect                    = false;
+            $has_access                     = false;
+            $mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
+            $mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
+            $mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
+            $mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
+            $mkdo_rcbr_default_redirect     = get_option( 'mkdo_rcbr_default_redirect' );
+            $mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles' );
+
+			if( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {
+				$mkdo_rcbr_removed_public_roles = array();
+			}
+
+            $all_roles                      = $wp_roles->roles;
+            $all_roles                      = array_keys( $all_roles );
+            $all_roles                      = array_diff( $all_roles, $mkdo_rcbr_removed_public_roles );
+            $mkdo_rcbr_roles                = array_diff( $mkdo_rcbr_roles, $mkdo_rcbr_removed_public_roles );
+            $role_check                     = array_diff( $all_roles, $mkdo_rcbr_roles );
 
 			if ( ! empty( $mkdo_rcbr_default_redirect ) ) {
 				$redirect_url = $mkdo_rcbr_default_redirect;
@@ -58,7 +69,7 @@ class PublicAccess {
 			if ( 'public' != $mkdo_rcbr_override ) {
 
 				// If it has roles, determine if it should do a redirect
-				if ( empty( $mkdo_rcbr_roles ) ) {
+				if ( ! empty( $role_check ) ) {
 
 					if ( 'content' == $mkdo_rcbr_restrict_sub_content || 'all' == $mkdo_rcbr_restrict_sub_content ) {
 						$do_redirect = true;
@@ -68,12 +79,14 @@ class PublicAccess {
 				} else if ( ! empty( $post->ancestors ) ) {
 					foreach ( $post->ancestors as $parent ) {
 
-						$mkdo_rcbr_roles                = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
-						$mkdo_rcbr_override             = get_post_meta( $parent, '_mkdo_rcbr_override', true );
-						$mkdo_rcbr_restrict_sub_content = '';
-						$mkdo_rcbr_custom_redirect       = '';
+                        $mkdo_rcbr_roles                = get_post_meta( $parent, '_mkdo_rcbr_roles', true );
+                        $mkdo_rcbr_override             = get_post_meta( $parent, '_mkdo_rcbr_override', true );
+                        $mkdo_rcbr_restrict_sub_content = '';
+                        $mkdo_rcbr_custom_redirect      = '';
+                        $mkdo_rcbr_roles                = array_diff( $mkdo_rcbr_roles, $mkdo_rcbr_removed_public_roles );
+						$role_check                     = array_diff( $all_roles, $mkdo_rcbr_roles );
 
-						if ( empty( $mkdo_rcbr_roles ) || 'public' == $mkdo_rcbr_override ) {
+						if ( ! empty( $role_check ) || 'public' == $mkdo_rcbr_override ) {
 
 							// If parent is public, no redirect
 							if ( 'public' == $mkdo_rcbr_override ) {
@@ -118,10 +131,6 @@ class PublicAccess {
 
 				if ( ! empty( $mkdo_rcbr_custom_redirect ) ) {
 					$redirect_url = $mkdo_rcbr_custom_redirect;
-				}
-
-				if( $redirect_to_referrer && isset( $_SERVER['HTTP_REFERER'] ) ) {
-					$redirect_url = $_SERVER['HTTP_REFERER'];
 				}
 
 				wp_redirect( $redirect_url, 302 );
