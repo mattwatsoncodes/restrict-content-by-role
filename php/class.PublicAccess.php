@@ -42,6 +42,10 @@ class PublicAccess {
             $current_user                   = wp_get_current_user();
             $roles                          = $current_user->roles;
             $redirect_url                   = wp_login_url ( '', false ) . '?error="mkdo-rcbr-no-access"';
+            $mkdo_rcbr_redirect_to_original = get_option( 'mkdo_rcbr_redirect_to_original' );
+			if( ! empty( $mkdo_rcbr_redirect_to_original ) ) {
+				$redirect_url               = wp_login_url ( get_the_permalink( $post->ID ), false ) . '&error="mkdo-rcbr-no-access"';
+			}
             $do_redirect                    = false;
             $has_access                     = false;
             $mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
@@ -53,6 +57,10 @@ class PublicAccess {
 
 			if( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {
 				$mkdo_rcbr_removed_public_roles = array();
+			}
+
+			if( ! is_array( $mkdo_rcbr_roles ) ) {
+				$mkdo_rcbr_roles = array();
 			}
 
             $all_roles                      = $wp_roles->roles;
@@ -83,6 +91,12 @@ class PublicAccess {
                         $mkdo_rcbr_override             = get_post_meta( $parent, '_mkdo_rcbr_override', true );
                         $mkdo_rcbr_restrict_sub_content = '';
                         $mkdo_rcbr_custom_redirect      = '';
+
+						if( ! is_array( $mkdo_rcbr_roles ) ) {
+							$mkdo_rcbr_roles = array();
+						}
+
+
                         $mkdo_rcbr_roles                = array_diff( $mkdo_rcbr_roles, $mkdo_rcbr_removed_public_roles );
 						$role_check                     = array_diff( $all_roles, $mkdo_rcbr_roles );
 

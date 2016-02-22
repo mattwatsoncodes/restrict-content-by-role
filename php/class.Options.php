@@ -39,6 +39,7 @@ class Options {
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_prevent_restricted_child' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_restrict_message' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_redirect' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_redirect_to_original' );
 
 		// Add sections
 		add_settings_section( 'mkdo_rcbr_post_types_section', 'Choose Public Post Types', array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
@@ -55,6 +56,7 @@ class Options {
 		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', 'Exclude Admin Roles:', array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
 		add_settings_field( 'mkdo_rcbr_prevent_restricted_child_select', 'Prevent Child Pages:', array( $this, 'mkdo_rcbr_prevent_restricted_child_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_prevent_restricted_child' );
 		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_redirect_to_original', 'Redirect to Orignal:', array( $this, 'mkdo_rcbr_redirect_to_original_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 		add_settings_field( 'mkdo_rcbr_default_redirect', 'Redirect URL:', array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 	}
 
@@ -322,6 +324,32 @@ class Options {
 			<p class="field-input">
 				<input type="text" name="mkdo_rcbr_default_redirect" id="mkdo_rcbr_default_redirect" placeholder="http://example.com/content/" value="<?php echo $mkdo_rcbr_default_redirect;?>" />
 			</p>
+		</div>
+
+		<?php
+	}
+
+	/**
+	 * Redirect to the original
+	 */
+	public function mkdo_rcbr_redirect_to_original_cb() {
+
+		$mkdo_rcbr_redirect_to_original = get_option( 'mkdo_rcbr_redirect_to_original', false );
+
+		?>
+
+		<div class="field field-checkbox field-restricted-child">
+			<p class="field-description">
+				<?php esc_html_e( 'After login, redirect to the originally requested URL.', MKDO_RCBR_TEXT_DOMAIN );?>
+			</p>
+			<ul class="field-input">
+				<li>
+					<label>
+						<input type="checkbox" name="mkdo_rcbr_redirect_to_original" value="1" <?php if ( $mkdo_rcbr_redirect_to_original ) { echo ' checked="checked"'; } ?> />
+						<?php esc_html_e( 'Redirect to original page', MKDO_RCBR_TEXT_DOMAIN );?>
+					</label>
+				</li>
+			</ul>
 		</div>
 
 		<?php
