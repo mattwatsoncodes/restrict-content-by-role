@@ -175,8 +175,7 @@ class PermissionsMetaBox {
 						esc_html_e( 'Choose the User Role(s) that you wish to restrict.', MKDO_RCBR_TEXT_DOMAIN );
 					?>
 				</p>
-				<?php if( count( $roles ) > 0 ) {
-				// print_r( $roles );?>
+				<?php if( count( $roles ) > 0 ) { ?>
 				<ul class="field-input">
 					<?php
 					foreach ( $roles as $key => $role ) {

@@ -16,6 +16,7 @@ class MainController {
 	private $metabox_controller;
 	private $permissions_column;
 	private $access_controller;
+	private $upgrade;
 
 	/**
 	 * Constructor
@@ -26,12 +27,13 @@ class MainController {
 	 * @param PermissionsColumn  $permissions_column   Object defining the permissions column
 	 * @param AccessController   $access_controller    Object to control content access
 	 */
-	public function __construct( Options $options, AssetsController $assets_controller, MetaBoxController $metabox_controller, PermissionsColumn $permissions_column, AccessController $access_controller ) {
-		$this->options              = $options;
-		$this->assets_controller    = $assets_controller;
-		$this->metabox_controller   = $metabox_controller;
-		$this->permissions_column   = $permissions_column;
-		$this->access_controller    = $access_controller;
+	public function __construct( Options $options, AssetsController $assets_controller, MetaBoxController $metabox_controller, PermissionsColumn $permissions_column, AccessController $access_controller, Upgrade $upgrade ) {
+        $this->options            = $options;
+        $this->assets_controller  = $assets_controller;
+        $this->metabox_controller = $metabox_controller;
+        $this->permissions_column = $permissions_column;
+        $this->access_controller  = $access_controller;
+        $this->upgrade            = $upgrade;
 	}
 
 	/**
@@ -40,6 +42,7 @@ class MainController {
 	public function run() {
 		load_plugin_textdomain( MKDO_RCBR_TEXT_DOMAIN, false, MKDO_RCBR_ROOT . '\languages' );
 
+		$this->upgrade->run();
 		$this->options->run();
 		$this->assets_controller->run();
 		$this->metabox_controller->run();

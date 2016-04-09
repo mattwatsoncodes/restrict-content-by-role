@@ -17,6 +17,7 @@
  */
 
 // Constants
+define( 'MKDO_RCBR_VERSION', '3.3.0' );
 define( 'MKDO_RCBR_ROOT', __FILE__ );
 define( 'MKDO_RCBR_TEXT_DOMAIN', 'restrict-content-by-role' );
 
@@ -32,6 +33,7 @@ require_once "php/class.AccessController.php";
 require_once "php/class.MetaBoxController.php";
 require_once "php/class.AdminAccess.php";
 require_once "php/class.PublicAccess.php";
+require_once "php/class.Upgrade.php";
 
 // Use Namespaces
 use mkdo\restrict_content_by_role\MainController;
@@ -45,6 +47,7 @@ use mkdo\restrict_content_by_role\AccessController;
 use mkdo\restrict_content_by_role\MetaBoxController;
 use mkdo\restrict_content_by_role\AdminAccess;
 use mkdo\restrict_content_by_role\PublicAccess;
+use mkdo\restrict_content_by_role\Upgrade;
 
 // Initialize Classes
 $options                    = new Options();
@@ -57,7 +60,8 @@ $login_errors               = new LoginErrors();
 $admin_access               = new AdminAccess();
 $public_access              = new PublicAccess( $login_errors );
 $access_controller          = new AccessController( $admin_access, $public_access );
-$controller                 = new MainController( $options, $assets_controller, $metabox_controller, $permissions_column, $access_controller );
+$upgrade                    = new Upgrade();
+$controller                 = new MainController( $options, $assets_controller, $metabox_controller, $permissions_column, $access_controller, $upgrade );
 
 // Run the Plugin
 $controller->run();
