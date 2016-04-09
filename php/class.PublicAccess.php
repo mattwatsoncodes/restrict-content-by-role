@@ -63,11 +63,12 @@ class PublicAccess {
 				$mkdo_rcbr_roles = array();
 			}
 
-            $all_roles                      = $wp_roles->roles;
-            $all_roles                      = array_keys( $all_roles );
-            $all_roles                      = array_diff( $all_roles, $mkdo_rcbr_removed_public_roles );
-            $mkdo_rcbr_roles                = array_diff( $mkdo_rcbr_roles, $mkdo_rcbr_removed_public_roles );
-            $role_check                     = array_diff( $all_roles, $mkdo_rcbr_roles );
+            $all_roles           = $wp_roles->roles;
+            $all_roles['public'] = array( 'name' => 'Public Access' );
+            $all_roles           = array_keys( $all_roles );
+            $all_roles           = array_diff( $all_roles, $mkdo_rcbr_removed_public_roles );
+            $mkdo_rcbr_roles     = array_diff( $mkdo_rcbr_roles, $mkdo_rcbr_removed_public_roles );
+            $role_check          = array_diff( $all_roles, $mkdo_rcbr_roles );
 
 			if ( ! empty( $mkdo_rcbr_default_redirect ) ) {
 				$redirect_url = $mkdo_rcbr_default_redirect;
@@ -131,13 +132,14 @@ class PublicAccess {
 				if ( ! is_array( $mkdo_rcbr_roles ) ) {
 					$mkdo_rcbr_roles = array();
 				}
-
 				foreach ( $roles as $key => $role ) {
 					if ( in_array( $role, $mkdo_rcbr_roles ) ) {
 						$has_access = true;
 						break;
 					}
 				}
+
+
 			}
 
 			// If the user does not have access, redirect them

@@ -7,7 +7,7 @@
  * Plugin Name:       Restrict Content by Role
  * Plugin URI:        https://github.com/mkdo/restrict-content-by-role
  * Description:       Restrict users with certain User Roles from accessing certain pieces of content and sub-content, both publicly and within the WordPress Dashboard (WP Admin).
- * Version:           3.2.0
+ * Version:           3.3.0
  * Author:            Make Do <hello@makedo.in>
  * Author URI:        http://www.makedo.in
  * License:           GPL-2.0+

@@ -20,8 +20,8 @@ class AccessController {
 	 * @param LoginErrors $login_errors Object that renders error messages on the login screen
 	 */
 	public function __construct( AdminAccess $admin_access, PublicAccess $public_access ) {
-		$this->public_access = $public_access;
-		$this->admin_access = $admin_access;
+        $this->public_access = $public_access;
+        $this->admin_access  = $admin_access;
 	}
 
 	/**

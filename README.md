@@ -18,6 +18,7 @@ The plugin provides the following functionality:
  - Choose the roles that will appear in the meta box to be restricted
  - Define a login screen error message (if no custom redirect URL is set)
  - Set a custom redirect URL
+ - Choose wether or not to redirect back to the original URL
 
 ## Installation
 
@@ -28,6 +29,8 @@ The plugin provides the following functionality:
 
 ## Changelog
 
+**3.3.0** - *09.04.2016* - Added 'Public Access' role, to restrict pages to logged in users  
+**3.3.0** - *09.04.2016* - Fixed an issue that prevented Tree Page View from working with the plugin  
 **3.2.0** - *22.02.2016* - Added checkbox to allow redirects back to the originally requested URL.  
 **3.1.2** - *03.02.2016* - Bug fix - better fix for auto-locking pages.  
 **3.1.1** - *03.02.2016* - Bug fix - sometimes new pages were automatically locked.  

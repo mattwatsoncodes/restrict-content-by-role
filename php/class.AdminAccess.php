@@ -205,8 +205,9 @@ class AdminAccess {
 
 		// If the function that called it is 'cms_tpv_get_pages', then filter the posts
 		if( is_admin() && isset( $backtrace[3] ) && isset( $backtrace[3]['function'] ) && 'cms_tpv_get_pages' == $backtrace[3]['function'] ) {
-			$get_posts_args['post__not_in'] = $this->excluded_posts;
-			$pages = get_posts( $get_posts_args );
+            $get_posts_args['fields']       = 'object';
+            $get_posts_args['post__not_in'] = $this->excluded_posts;
+            $pages                          = get_posts( $get_posts_args );
 		}
 
 	    return $pages;

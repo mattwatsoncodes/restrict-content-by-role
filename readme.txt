@@ -4,7 +4,7 @@ Donate link:
 Tags: restrict, restrict content, lockdown, lockdown content, pages, lockdown pages, management, manage pages, manage user roles, manage users, manage roles, user, roles, permissions, manage page permissions, manage content permissions, manage permissions, manage sub page permissions
 Requires at least: 4.4
 Tested up to: 4.4
-Stable tag: 3.2.0
+Stable tag: 3.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,10 @@ If you are using this plugin in your project [we would love to hear about it](ma
 6. After admin permission set, an editor can no longer see the page in the admin panel
 
 == Changelog ==
+
+= 3.3.0 =
+* Added 'Public Access' role, to restrict pages to logged in users
+* Fixed an issue that prevented Tree Page View from working with the plugin
 
 = 3.2.0 =
 * Added checkbox to allow redirects back to the originally requested URL

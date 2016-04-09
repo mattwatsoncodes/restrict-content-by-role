@@ -198,6 +198,7 @@ class Options {
 		global $wp_roles;
 
 		$roles                          = $wp_roles->roles;
+		$roles['public']                = array( 'name' => 'Public Access' );
 		$mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles', array() );
 
 		if ( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {

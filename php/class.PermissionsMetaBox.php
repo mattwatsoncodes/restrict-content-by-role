@@ -75,15 +75,17 @@ class PermissionsMetaBox {
 
 		global $wp_roles;
 
-		$is_restricted_by_parent        = false;
-		$parent_id                      = 0;
-		$roles                          = $wp_roles->roles;
-		$mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles', array() );
-		$mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
-		$mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
-		$mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
-		$mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
-		$is_hirachical                  = is_post_type_hierarchical( $post->post_type );
+        $is_restricted_by_parent        = false;
+        $parent_id                      = 0;
+        $roles                          = $wp_roles->roles;
+        $mkdo_rcbr_removed_public_roles = get_option( 'mkdo_rcbr_removed_public_roles', array() );
+        $mkdo_rcbr_roles                = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
+        $mkdo_rcbr_restrict_sub_content = get_post_meta( $post->ID, '_mkdo_rcbr_restrict_sub_content', true );
+        $mkdo_rcbr_custom_redirect      = get_post_meta( $post->ID, '_mkdo_rcbr_custom_redirect', true );
+        $mkdo_rcbr_override             = get_post_meta( $post->ID, '_mkdo_rcbr_override', true );
+        $is_hirachical                  = is_post_type_hierarchical( $post->post_type );
+
+		$roles['public']                = array( 'name' => 'Public Access' );
 
 		if ( ! is_array( $mkdo_rcbr_removed_public_roles ) ) {
 			$mkdo_rcbr_removed_public_roles = array();
@@ -97,7 +99,7 @@ class PermissionsMetaBox {
 
 		if ( ! is_array( $mkdo_rcbr_roles ) ) {
 			$mkdo_rcbr_roles = array();
-			$default_roles   = array_keys( $wp_roles->roles );
+			$default_roles   = array_keys( $roles );
 			foreach( $default_roles as $role ) {
 				$mkdo_rcbr_roles[$role] = $role;
 			}
@@ -173,7 +175,8 @@ class PermissionsMetaBox {
 						esc_html_e( 'Choose the User Role(s) that you wish to restrict.', MKDO_RCBR_TEXT_DOMAIN );
 					?>
 				</p>
-				<?php if( count( $roles ) > 0 ) { ?>
+				<?php if( count( $roles ) > 0 ) {
+				// print_r( $roles );?>
 				<ul class="field-input">
 					<?php
 					foreach ( $roles as $key => $role ) {
@@ -281,7 +284,9 @@ class PermissionsMetaBox {
 			return $post_id;
 		}
 
-		$all_roles                      = array_keys( $wp_roles->roles );
+		$roles                          = $wp_roles->roles;
+		$roles['public']                = array( 'name' => 'Public Access' );
+		$all_roles                      = array_keys( $roles );
 		$mkdo_rcbr_roles                = isset( $_POST['mkdo_rcbr_roles'] )                ?  $_POST['mkdo_rcbr_roles'] : array();
 		$mkdo_rcbr_restrict_sub_content = isset( $_POST['mkdo_rcbr_restrict_sub_content'] ) ?  sanitize_text_field( $_POST['mkdo_rcbr_restrict_sub_content'] ) : 'content';
 		$mkdo_rcbr_custom_redirect      = isset( $_POST['mkdo_rcbr_custom_redirect'] )      ?  esc_url_raw( $_POST['mkdo_rcbr_custom_redirect'] ) : null;
