@@ -15,6 +15,7 @@ The plugin provides the following functionality:
 - The ability to override parent content restrictions on sub-content (including the ability to make it public)
 - An options page, with the following options:
  - Choose post types that the meta box should appear on
+ - Option to hide restricted pages from menu (only works when using `wp_nav_menu()`)
  - Choose the roles that will appear in the meta box to be restricted
  - Define a login screen error message (if no custom redirect URL is set)
  - Set a custom redirect URL
@@ -43,4 +44,5 @@ The plugin provides the following functionality:
 **3.2.0** - *22.02.2016* - Added checkbox to allow redirects back to the originally requested URL.  
 **3.3.0** - *09.04.2016* - Fixed an issue that prevented Tree Page View from working with the plugin  
 **3.3.0** - *09.04.2016* - Added 'Public Access' role, to restrict pages to logged in users  
-**3.3.1** - *08.08.2016* - Tested with WordPress 4.5, updated translations
+**3.3.1** - *08.08.2016* - Tested with WordPress 4.5, updated translations  
+**3.4.0** - *08.08.2016* - Option to hide restricted pages from menu (only works when using `wp_nav_menu()`)

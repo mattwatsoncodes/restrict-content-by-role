@@ -40,6 +40,7 @@ class Options {
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_restrict_message' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_default_redirect' );
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_redirect_to_original' );
+		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_hide_from_menus' );
 
 		// Add sections
 		add_settings_section( 'mkdo_rcbr_post_types_section', esc_html__( 'Choose Public Post Types', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
@@ -51,6 +52,7 @@ class Options {
 
     	// Add fields to a section
 		add_settings_field( 'mkdo_rcbr_post_types_select', esc_html__( 'Choose Public Post Types:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_hide_from_menus', esc_html__( 'Hide from Menus:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_hide_from_menus_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
 		add_settings_field( 'mkdo_rcbr_admin_post_types_select', esc_html__( 'Choose Admin Post Types:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_admin_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_admin_post_types_section' );
 		add_settings_field( 'mkdo_rcbr_removed_public_roles_select', esc_html__( 'Exclude Public Roles:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_public_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_public_roles_section' );
 		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', esc_html__( 'Exclude Admin Roles:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
@@ -149,6 +151,29 @@ class Options {
 				?>
 			</ul>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Call back for the hide from menus field
+	 */
+	public function mkdo_rcbr_hide_from_menus_cb() {
+
+		$mkdo_rcbr_hide_from_menus = get_option( 'mkdo_rcbr_hide_from_menus', 'false' );
+
+		?>
+
+		<div class="field field-checkbox field-hide-from-menus">
+			<ul class="field-input">
+				<li>
+					<label>
+						<input type="checkbox" name="mkdo_rcbr_hide_from_menus" value="true" <?php if ( 'true' === $mkdo_rcbr_hide_from_menus ) { echo ' checked="checked"'; } ?> />
+						<?php esc_html_e( 'Hide restricted public content from menus', MKDO_RCBR_TEXT_DOMAIN  ) ;?>
+					</label>
+				</li>
+			</ul>
+		</div>
+
 		<?php
 	}
 

@@ -7,7 +7,7 @@
  * Plugin Name:       Restrict Content by Role
  * Plugin URI:        https://github.com/mkdo/restrict-content-by-role
  * Description:       Restrict users with certain User Roles from accessing certain pieces of content and sub-content, both publicly and within the WordPress Dashboard (WP Admin).
- * Version:           3.3.1
+ * Version:           3.4.0
  * Author:            Make Do <hello@makedo.net>
  * Author URI:        http://www.makedo.net
  * License:           GPL-2.0+
@@ -34,6 +34,7 @@ require_once "php/class.MetaBoxController.php";
 require_once "php/class.AdminAccess.php";
 require_once "php/class.PublicAccess.php";
 require_once "php/class.Upgrade.php";
+require_once "php/class.MenuAccess.php";
 
 // Use Namespaces
 use mkdo\restrict_content_by_role\MainController;
@@ -48,6 +49,7 @@ use mkdo\restrict_content_by_role\MetaBoxController;
 use mkdo\restrict_content_by_role\AdminAccess;
 use mkdo\restrict_content_by_role\PublicAccess;
 use mkdo\restrict_content_by_role\Upgrade;
+use mkdo\restrict_content_by_role\MenuAccess;
 
 // Initialize Classes
 $options                    = new Options();
@@ -61,7 +63,8 @@ $admin_access               = new AdminAccess();
 $public_access              = new PublicAccess( $login_errors );
 $access_controller          = new AccessController( $admin_access, $public_access );
 $upgrade                    = new Upgrade();
-$controller                 = new MainController( $options, $assets_controller, $metabox_controller, $permissions_column, $access_controller, $upgrade );
+$menu_access                = new MenuAccess();
+$controller                 = new MainController( $options, $assets_controller, $metabox_controller, $permissions_column, $access_controller, $upgrade, $menu_access );
 
 // Run the Plugin
 $controller->run();

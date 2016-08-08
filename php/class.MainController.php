@@ -17,6 +17,7 @@ class MainController {
 	private $permissions_column;
 	private $access_controller;
 	private $upgrade;
+	private $menu_access;
 
 	/**
 	 * Constructor
@@ -27,13 +28,14 @@ class MainController {
 	 * @param PermissionsColumn  $permissions_column   Object defining the permissions column
 	 * @param AccessController   $access_controller    Object to control content access
 	 */
-	public function __construct( Options $options, AssetsController $assets_controller, MetaBoxController $metabox_controller, PermissionsColumn $permissions_column, AccessController $access_controller, Upgrade $upgrade ) {
+	public function __construct( Options $options, AssetsController $assets_controller, MetaBoxController $metabox_controller, PermissionsColumn $permissions_column, AccessController $access_controller, Upgrade $upgrade, MenuAccess $menu_access ) {
         $this->options            = $options;
         $this->assets_controller  = $assets_controller;
         $this->metabox_controller = $metabox_controller;
         $this->permissions_column = $permissions_column;
         $this->access_controller  = $access_controller;
         $this->upgrade            = $upgrade;
+		$this->menu_access            = $menu_access;
 	}
 
 	/**
@@ -48,5 +50,6 @@ class MainController {
 		$this->metabox_controller->run();
 		$this->permissions_column->run();
 		$this->access_controller->run();
+		$this->menu_access->run();
 	}
 }
