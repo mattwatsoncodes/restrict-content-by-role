@@ -45,4 +45,5 @@ The plugin provides the following functionality:
 **3.3.0** - *09.04.2016* - Fixed an issue that prevented Tree Page View from working with the plugin  
 **3.3.0** - *09.04.2016* - Added 'Public Access' role, to restrict pages to logged in users  
 **3.3.1** - *08.08.2016* - Tested with WordPress 4.5, updated translations  
-**3.4.0** - *08.08.2016* - Option to hide restricted pages from menu (only works when using `wp_nav_menu()`)
+**3.4.0** - *08.08.2016* - Option to hide restricted pages from menu (only works when using `wp_nav_menu()`)  
+**3.4.1** - *08.08.2016* - Added missing Menu Access file  
