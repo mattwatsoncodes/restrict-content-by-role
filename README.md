@@ -29,17 +29,18 @@ The plugin provides the following functionality:
 
 ## Changelog
 
-**3.3.0** - *09.04.2016* - Added 'Public Access' role, to restrict pages to logged in users  
-**3.3.0** - *09.04.2016* - Fixed an issue that prevented Tree Page View from working with the plugin  
-**3.2.0** - *22.02.2016* - Added checkbox to allow redirects back to the originally requested URL.  
-**3.1.2** - *03.02.2016* - Bug fix - better fix for auto-locking pages.  
-**3.1.1** - *03.02.2016* - Bug fix - sometimes new pages were automatically locked.  
-**3.1.0** - *14.01.2016* - New option to prevent users adding child pages to restricted pages.  
-**3.0.1** - *14.01.2016* - Fixed bug where new pages would be locked out.  
-**3.0.0** - *12.11.2015* - Switched the way the meta box checkboxes work, so that they are more intuitive.  
-**2.1.0** - *12.11.2015* - Now works with the CMS Tree Page View plugin.  
-**2.0.0** - *03.11.2015* - The plugin can now restrict access to content on within wp-admin.  
-**2.0.0** - *03.11.2015* - You can now select which roles are shown in the custom meta box.  
-**1.2.0** - *01.10.2015* - Updated for submission to WordPress plugin repository.  
-**1.1.0** - *01.10.2015* - Reviewed and refactored code.  
 **1.0.0** - *29.09.2015* - First stable release.  
+**1.1.0** - *01.10.2015* - Reviewed and refactored code.  
+**1.2.0** - *01.10.2015* - Updated for submission to WordPress plugin repository.  
+**2.0.0** - *03.11.2015* - You can now select which roles are shown in the custom meta box.  
+**2.0.0** - *03.11.2015* - The plugin can now restrict access to content on within wp-admin.  
+**2.1.0** - *12.11.2015* - Now works with the CMS Tree Page View plugin.  
+**3.0.0** - *12.11.2015* - Switched the way the meta box checkboxes work, so that they are more intuitive.  
+**3.0.1** - *14.01.2016* - Fixed bug where new pages would be locked out.  
+**3.1.0** - *14.01.2016* - New option to prevent users adding child pages to restricted pages.  
+**3.1.1** - *03.02.2016* - Bug fix - sometimes new pages were automatically locked.  
+**3.1.2** - *03.02.2016* - Bug fix - better fix for auto-locking pages.  
+**3.2.0** - *22.02.2016* - Added checkbox to allow redirects back to the originally requested URL.  
+**3.3.0** - *09.04.2016* - Fixed an issue that prevented Tree Page View from working with the plugin  
+**3.3.0** - *09.04.2016* - Added 'Public Access' role, to restrict pages to logged in users  
+**3.3.1** - *08.08.2016* - Tested with WordPress 4.5, updated translations

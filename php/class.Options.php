@@ -42,22 +42,22 @@ class Options {
 		register_setting( 'mkdo_rcbr_settings_group', 'mkdo_rcbr_redirect_to_original' );
 
 		// Add sections
-		add_settings_section( 'mkdo_rcbr_post_types_section', 'Choose Public Post Types', array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
-		add_settings_section( 'mkdo_rcbr_admin_post_types_section', 'Choose Admin Post Types', array( $this, 'mkdo_rcbr_admin_post_types_section_cb' ), 'mkdo_rcbr_settings' );
-		add_settings_section( 'mkdo_rcbr_removed_public_roles_section', 'Public Access Roles', array( $this, 'mkdo_rcbr_removed_public_roles_section_cb' ), 'mkdo_rcbr_settings' );
-		add_settings_section( 'mkdo_rcbr_removed_admin_roles_section', 'Admin Access Roles', array( $this, 'mkdo_rcbr_removed_admin_roles_section_cb' ), 'mkdo_rcbr_settings' );
-		add_settings_section( 'mkdo_rcbr_prevent_restricted_child', 'Prevent Restricted Content Child Pages', array( $this, 'mkdo_rcbr_prevent_restricted_child_cb' ), 'mkdo_rcbr_settings' );
-		add_settings_section( 'mkdo_rcbr_default_restrict_message_section', 'Restrict Message', array( $this, 'mkdo_rcbr_default_restrict_message_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_post_types_section', esc_html__( 'Choose Public Post Types', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_post_types_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_admin_post_types_section', esc_html__( 'Choose Admin Post Types', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_admin_post_types_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_removed_public_roles_section', esc_html__( 'Public Access Roles', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_public_roles_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_removed_admin_roles_section', esc_html__( 'Admin Access Roles', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_admin_roles_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_prevent_restricted_child', esc_html__( 'Prevent Restricted Content Child Pages', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_prevent_restricted_child_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_default_restrict_message_section', esc_html__( 'Restrict Message', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_restrict_message_section_cb' ), 'mkdo_rcbr_settings' );
 
     	// Add fields to a section
-		add_settings_field( 'mkdo_rcbr_post_types_select', 'Choose Public Post Types:', array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
-		add_settings_field( 'mkdo_rcbr_admin_post_types_select', 'Choose Admin Post Types:', array( $this, 'mkdo_rcbr_admin_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_admin_post_types_section' );
-		add_settings_field( 'mkdo_rcbr_removed_public_roles_select', 'Exclude Public Roles:', array( $this, 'mkdo_rcbr_removed_public_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_public_roles_section' );
-		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', 'Exclude Admin Roles:', array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
-		add_settings_field( 'mkdo_rcbr_prevent_restricted_child_select', 'Prevent Child Pages:', array( $this, 'mkdo_rcbr_prevent_restricted_child_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_prevent_restricted_child' );
-		add_settings_field( 'mkdo_rcbr_default_restrict_message', 'Restriction Message:', array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
-		add_settings_field( 'mkdo_rcbr_redirect_to_original', 'Redirect to Orignal:', array( $this, 'mkdo_rcbr_redirect_to_original_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
-		add_settings_field( 'mkdo_rcbr_default_redirect', 'Redirect URL:', array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_post_types_select', esc_html__( 'Choose Public Post Types:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_admin_post_types_select', esc_html__( 'Choose Admin Post Types:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_admin_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_admin_post_types_section' );
+		add_settings_field( 'mkdo_rcbr_removed_public_roles_select', esc_html__( 'Exclude Public Roles:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_public_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_public_roles_section' );
+		add_settings_field( 'mkdo_rcbr_removed_admin_roles_select', esc_html__( 'Exclude Admin Roles:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_admin_roles_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_removed_admin_roles_section' );
+		add_settings_field( 'mkdo_rcbr_prevent_restricted_child_select', esc_html__( 'Prevent Child Pages:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_prevent_restricted_child_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_prevent_restricted_child' );
+		add_settings_field( 'mkdo_rcbr_default_restrict_message', esc_html__( 'Restriction Message:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_redirect_to_original', esc_html__( 'Redirect to Orignal:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_redirect_to_original_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_default_redirect', esc_html__( 'Redirect URL:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Options {
 					<li>
 						<label>
 							<input type="checkbox" name="mkdo_rcbr_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
-							<?php echo $post_type_object->labels->name;?>
+							<?php _e( $post_type_object->labels->name );?>
 						</label>
 					</li>
 					<?php
@@ -179,7 +179,7 @@ class Options {
 					<li>
 						<label>
 							<input type="checkbox" name="mkdo_rcbr_admin_post_types[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_post_types ) ) { echo ' checked="checked"'; } ?> />
-							<?php echo $post_type_object->labels->name;?>
+							<?php _e( $post_type_object->labels->name );?>
 						</label>
 					</li>
 					<?php
@@ -214,7 +214,7 @@ class Options {
 					<li>
 						<label>
 							<input type="checkbox" name="mkdo_rcbr_removed_public_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_removed_public_roles ) ) { echo ' checked="checked"'; } ?> />
-							<?php echo $role['name'];?>
+							<?php _e( $role['name'] );?>
 						</label>
 					</li>
 					<?php
@@ -248,7 +248,7 @@ class Options {
 					<li>
 						<label>
 							<input type="checkbox" name="mkdo_rcbr_removed_admin_roles[]" value="<?php echo $key; ?>" <?php if ( in_array( $key, $mkdo_rcbr_removed_admin_roles ) ) { echo ' checked="checked"'; } ?> />
-							<?php echo $role['name'];?>
+							<?php _e( $role['name'] );?>
 						</label>
 					</li>
 					<?php
@@ -273,7 +273,7 @@ class Options {
 				<li>
 					<label>
 						<input type="checkbox" name="mkdo_rcbr_prevent_restricted_child" value="1" <?php if ( $mkdo_rcbr_prevent_restricted_child ) { echo ' checked="checked"'; } ?> />
-						Restrict child pages under restricted content
+						<?php esc_html_e( 'Restrict child pages under restricted content', MKDO_RCBR_TEXT_DOMAIN  ) ;?>
 					</label>
 				</li>
 			</ul>

@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Restrict Content by Role\n"
-"POT-Creation-Date: 2015-09-29 22:32+0100\n"
-"PO-Revision-Date: 2015-09-29 22:32+0100\n"
+"POT-Creation-Date: 2016-08-08 13:55+0100\n"
+"PO-Revision-Date: 2016-08-08 13:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: plugin.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,134 +20,255 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: php/class.LoginErrors.php:23 php/class.Options.php:121
-msgid "Please login to access that area of the website."
+#: php/class.AdminPermissionsMetaBox.php:39
+msgid "Admin Access"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-#: php/class.Options.php:41 php/class.Options.php:50
-msgid "Restrict Content by Role"
-msgstr ""
-
-#: php/class.Options.php:65
-msgid "Select the Post Types that you wish to activate this plugin on."
-msgstr ""
-
-#: php/class.Options.php:112
-msgid ""
-"Add the message that you wish to appear on the Login Page for restricted "
-"users. Or alternativly redirect the restricted user to a URL of your choice."
-msgstr ""
-
-#: php/class.Options.php:128
-msgid "Message"
-msgstr ""
-
-#: php/class.Options.php:150
-msgid "Redirect Url"
-msgstr ""
-
-#: php/class.Options.php:154
-msgid ""
-"Enter the full URL that you wish to redirect to. (Leave blank to redirect to "
-"login screen)."
-msgstr ""
-
-#: php/class.PermissionsColumn.php:46
-msgid "Public Access to Content"
-msgstr ""
-
-#: php/class.PermissionsColumn.php:58
-msgid "Restricted Access to Content"
-msgstr ""
-
-#: php/class.PermissionsColumn.php:68
-msgid "Restricted Access to Content and Sub Content"
-msgstr ""
-
-#: php/class.PermissionsColumn.php:77
-msgid "Restricted Access to Sub Content Only"
-msgstr ""
-
-#: php/class.PermissionsColumn.php:105 php/class.PermissionsColumn.php:114
-msgid "Restricted Access to Content (via Parent)"
-msgstr ""
-
-#: php/class.PermissionsColumn.php:130
-msgid "Public Access to Content (No permissions set)"
-msgstr ""
-
-#: php/class.PermissionsMetaBox.php:34
-msgid "User Role Access"
-msgstr ""
-
-#: php/class.PermissionsMetaBox.php:100
+#: php/class.AdminPermissionsMetaBox.php:132
+#: php/class.PermissionsMetaBox.php:135
 msgid "Override Parent Permissions"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:104
+#: php/class.AdminPermissionsMetaBox.php:136
+#: php/class.PermissionsMetaBox.php:139
 #, php-format
 msgid ""
 "%sWarning:%s This content of this item has been %srestricted by one of its "
 "parents%s."
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:105
+#: php/class.AdminPermissionsMetaBox.php:137
+#: php/class.PermissionsMetaBox.php:140
 #, php-format
 msgid ""
 "You can %sedit the parent content permissions%s, or choose an override "
 "option."
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:111
+#: php/class.AdminPermissionsMetaBox.php:143
+#: php/class.PermissionsMetaBox.php:146
 msgid "No override"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:117
+#: php/class.AdminPermissionsMetaBox.php:149
+#: php/class.PermissionsMetaBox.php:152
 msgid "Grant Public Access (Override permissions set by parent)"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:123
+#: php/class.AdminPermissionsMetaBox.php:155
+#: php/class.PermissionsMetaBox.php:158
 msgid "Set New Permissions (Override permissions set by parent)"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:135
-msgid "Restrict Content to User Roles"
+#: php/class.AdminPermissionsMetaBox.php:167
+#: php/class.PermissionsMetaBox.php:170
+msgid "Restrict Access by User Role"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:141
+#: php/class.AdminPermissionsMetaBox.php:172
+#, php-format
 msgid ""
-"Select the User Roles that are able to view this content (or its sub "
-"content). If no roles are selected the content will be publicly accessible."
+"Choose the User Role(s) that you wish to restrict. %sNote:%s You cannot "
+"restrict administrators."
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:143 php/class.PermissionsMetaBox.php:171
-msgid ""
-"Select the User Roles that are able to view this content. If no roles are "
-"selected the content will be publicly accessible."
+#: php/class.AdminPermissionsMetaBox.php:191
+#: php/class.PermissionsMetaBox.php:194
+msgid "There are no user roles available."
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:167
+#: php/class.AdminPermissionsMetaBox.php:199
+#: php/class.PermissionsMetaBox.php:202
 msgid "Restrict Access to Sub Content"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:177
+#: php/class.AdminPermissionsMetaBox.php:203
+#: php/class.PermissionsMetaBox.php:206
+msgid "Choose how the content should be restricted."
+msgstr ""
+
+#: php/class.AdminPermissionsMetaBox.php:209
+#: php/class.PermissionsMetaBox.php:212
 msgid "Restrict Access to Content Only"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:183
+#: php/class.AdminPermissionsMetaBox.php:215
+#: php/class.PermissionsMetaBox.php:218
 msgid "Restrict Access to Content and Sub Content"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:189
+#: php/class.AdminPermissionsMetaBox.php:221
+#: php/class.PermissionsMetaBox.php:224
 msgid "Restrict Access to Sub Content Only"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:201
+#: php/class.LoginErrors.php:33 php/class.Options.php:290
+msgid "Please login to access that area of the website."
+msgstr ""
+
+#: php/class.Options.php:45
+msgid "Choose Public Post Types"
+msgstr ""
+
+#: php/class.Options.php:46
+msgid "Choose Admin Post Types"
+msgstr ""
+
+#: php/class.Options.php:47
+msgid "Public Access Roles"
+msgstr ""
+
+#: php/class.Options.php:48
+msgid "Admin Access Roles"
+msgstr ""
+
+#: php/class.Options.php:49
+msgid "Prevent Restricted Content Child Pages"
+msgstr ""
+
+#: php/class.Options.php:50
+msgid "Restrict Message"
+msgstr ""
+
+#: php/class.Options.php:53
+msgid "Choose Public Post Types:"
+msgstr ""
+
+#: php/class.Options.php:54
+msgid "Choose Admin Post Types:"
+msgstr ""
+
+#: php/class.Options.php:55
+msgid "Exclude Public Roles:"
+msgstr ""
+
+#: php/class.Options.php:56
+msgid "Exclude Admin Roles:"
+msgstr ""
+
+#: php/class.Options.php:57
+msgid "Prevent Child Pages:"
+msgstr ""
+
+#: php/class.Options.php:58
+msgid "Restriction Message:"
+msgstr ""
+
+#: php/class.Options.php:59
+msgid "Redirect to Orignal:"
+msgstr ""
+
+#: php/class.Options.php:60
+msgid "Redirect URL:"
+msgstr ""
+
+#: php/class.Options.php:68
+msgid ""
+"Select the Post Types that you wish to activate the Public Access meta box "
+"on."
+msgstr ""
+
+#: php/class.Options.php:77
+msgid ""
+"Select the Post Types that you wish to activate the Admin Access meta box on."
+msgstr ""
+
+#: php/class.Options.php:86
+msgid ""
+"Check the user roles that you do not wish to be available for selection via "
+"the Public Access metabox."
+msgstr ""
+
+#: php/class.Options.php:95
+msgid ""
+"Check the user roles that you do not wish to be available for selection via "
+"the Admin Access metabox."
+msgstr ""
+
+#: php/class.Options.php:104
+msgid ""
+"Check the box to prevent users from adding child pages to content that they "
+"are restricted from editing"
+msgstr ""
+
+#: php/class.Options.php:113
+msgid ""
+"Add the message that you wish to appear on the Login Page for restricted "
+"users. Or alternativly redirect the restricted user to a URL of your choice."
+msgstr ""
+
+#: php/class.Options.php:276
+msgid "Restrict child pages under restricted content"
+msgstr ""
+
+#: php/class.Options.php:297
+msgid "Message"
+msgstr ""
+
+#: php/class.Options.php:319
+msgid "Redirect Url"
+msgstr ""
+
+#: php/class.Options.php:323
+msgid ""
+"Enter the full URL that you wish to redirect to. (Leave blank to redirect to "
+"login screen)."
+msgstr ""
+
+#: php/class.Options.php:344
+msgid "After login, redirect to the originally requested URL."
+msgstr ""
+
+#: php/class.Options.php:350
+msgid "Redirect to original page"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: php/class.Options.php:363 php/class.Options.php:372
+msgid "Restrict Content by Role"
+msgstr ""
+
+#: php/class.Options.php:386
+msgid "Settings"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:88
+msgid "Public Access to Content"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:100
+msgid "Restricted Access to Content"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:110
+msgid "Restricted Access to Content and Sub Content"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:119
+msgid "Restricted Access to Sub Content Only"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:147 php/class.PermissionsColumn.php:156
+msgid "Restricted Access to Content (via Parent)"
+msgstr ""
+
+#: php/class.PermissionsColumn.php:172
+msgid "Public Access to Content (No permissions set)"
+msgstr ""
+
+#: php/class.PermissionsMetaBox.php:39
+msgid "Public Access"
+msgstr ""
+
+#: php/class.PermissionsMetaBox.php:175
+msgid "Choose the User Role(s) that you wish to restrict."
+msgstr ""
+
+#: php/class.PermissionsMetaBox.php:236
 msgid "Custom Redirect"
 msgstr ""
 
-#: php/class.PermissionsMetaBox.php:205
+#: php/class.PermissionsMetaBox.php:240
 msgid ""
 "Enter the full URL that you wish restricted users to redirect to. (Leave "
 "blank to use default redirect settings)."
@@ -159,14 +280,15 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Restrict users with certain User Roles from accessing certain peices of "
-"content and sub-content within the WordPress Dashboard (WP Admin)."
+"Restrict users with certain User Roles from accessing certain pieces of "
+"content and sub-content, both publicly and within the WordPress Dashboard "
+"(WP Admin)."
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Make Do <hello@makedo.in>"
+msgid "Make Do <hello@makedo.net>"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://www.makedo.in"
+msgid "http://www.makedo.net"
 msgstr ""

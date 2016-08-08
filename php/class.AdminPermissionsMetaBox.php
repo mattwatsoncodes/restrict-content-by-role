@@ -180,7 +180,7 @@ class AdminPermissionsMetaBox {
 						<li>
 							<label>
 								<input type="checkbox" name="mkdo_rcbr_admin_roles[]" value="<?php echo $key; ?>" <?php if ( ! in_array( $key, $mkdo_rcbr_admin_roles ) ) { echo ' checked="checked"'; } ?><?php echo $key == 'administrator' ? ' disabled="disabled"' : '';?> />
-								<?php echo $role['name'];?>
+								<?php _e( $role['name'] );?>
 							</label>
 						</li>
 						<?php
@@ -188,7 +188,7 @@ class AdminPermissionsMetaBox {
 					?>
 				</ul>
 				<?php } else { ?>
-					<p>There are no user roles available.</p>
+					<p><?php esc_html_e( 'There are no user roles available.', MKDO_RCBR_TEXT_DOMAIN );?></p>
 				<?php } ?>
 			</div>
 

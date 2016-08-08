@@ -3,8 +3,8 @@ Contributors: mkdo, mwtsn
 Donate link:
 Tags: restrict, restrict content, lockdown, lockdown content, pages, lockdown pages, management, manage pages, manage user roles, manage users, manage roles, user, roles, permissions, manage page permissions, manage content permissions, manage permissions, manage sub page permissions
 Requires at least: 4.4
-Tested up to: 4.4
-Stable tag: 3.3.0
+Tested up to: 4.5
+Stable tag: 3.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ The plugin provides the following functionality:
  * Set a custom redirect URL
  * Prevent users from adding child content to restricted content
 
-If you are using this plugin in your project [we would love to hear about it](mailto:hello@makedo.in).
+If you are using this plugin in your project [we would love to hear about it](mailto:hello@makedo.net).
 
 == Installation ==
 
@@ -49,40 +49,43 @@ If you are using this plugin in your project [we would love to hear about it](ma
 
 == Changelog ==
 
-= 3.3.0 =
-* Added 'Public Access' role, to restrict pages to logged in users
-* Fixed an issue that prevented Tree Page View from working with the plugin
+= 1.0.0 =
+* First stable release
 
-= 3.2.0 =
-* Added checkbox to allow redirects back to the originally requested URL
+= 1.1.0 =
+* Reviewed and refactored code
 
-= 3.1.2 =
-* Bug fix - better fix for auto-locking pages.
-
-= 3.1.1 =
-* Bug fix - sometimes new pages were automatically locked.
-
-= 3.1.0 =
-* New option to prevent users adding child pages to restricted pages.
-
-= 3.0.1 =
-* Fixed bug where new pages would be locked out.
-
-= 3.0.0 =
-* Switched the way the meta box checkboxes work, so that they are more intuitive.
-
-= 2.1.0 =
-* Now works with the CMS Tree Page View plugin
+= 1.2.0 =
+* Updated for submission to WordPress plugin repository
 
 = 2.0.0 =
 * The plugin can now restrict access to content on within wp-admin
 * You can now select which roles are shown in the custom meta box
 
-= 1.2.0 =
-* Updated for submission to WordPress plugin repository
+= 2.1.0 =
+* Now works with the CMS Tree Page View plugin
 
-= 1.1.0 =
-* Reviewed and refactored code
+= 3.0.0 =
+* Switched the way the meta box checkboxes work, so that they are more intuitive.
 
-= 1.0.0 =
-* First stable release
+= 3.0.1 =
+* Fixed bug where new pages would be locked out.
+
+= 3.1.0 =
+* New option to prevent users adding child pages to restricted pages.
+
+= 3.1.1 =
+* Bug fix - sometimes new pages were automatically locked.
+
+= 3.1.2 =
+* Bug fix - better fix for auto-locking pages.
+
+= 3.2.0 =
+* Added checkbox to allow redirects back to the originally requested URL
+
+= 3.3.0 =
+* Added 'Public Access' role, to restrict pages to logged in users
+* Fixed an issue that prevented Tree Page View from working with the plugin
+
+= 3.3.1 =
+* Tested with WordPress 4.5, updated translations
