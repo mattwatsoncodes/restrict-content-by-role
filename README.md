@@ -47,3 +47,4 @@ The plugin provides the following functionality:
 **3.3.1** - *08.08.2016* - Tested with WordPress 4.5, updated translations  
 **3.4.0** - *08.08.2016* - Option to hide restricted pages from menu (only works when using `wp_nav_menu()`)  
 **3.4.1** - *08.08.2016* - Added missing Menu Access file  
+**3.4.2** - *09.08.2016* - Allow admins to see backend menu items, even if they are restricted on the front end  
