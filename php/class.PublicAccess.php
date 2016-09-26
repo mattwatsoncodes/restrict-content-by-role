@@ -71,7 +71,7 @@ class PublicAccess {
             $role_check          = array_diff( $all_roles, $mkdo_rcbr_roles );
 
 			if ( ! empty( $mkdo_rcbr_default_redirect ) ) {
-				$redirect_url = $mkdo_rcbr_default_redirect;
+				$redirect_url = $mkdo_rcbr_default_redirect . '?redirect_url=' . urlencode(get_the_permalink( $post->ID ));
 			}
 
 			// If the content is not a public override
