@@ -25,7 +25,7 @@ class MenuAccess {
 	public function menu_control( $items, $menu, $args ) {
 
 		$mkdo_rcbr_hide_from_menus = get_option( 'mkdo_rcbr_hide_from_menus', 'false' );
-		if( 'false' === $mkdo_rcbr_hide_from_menus || is_admin() ) {
+		if ( empty( $mkdo_rcbr_hide_from_menus ) || 'false' === $mkdo_rcbr_hide_from_menus || is_admin() ) {
 			return $items;
 		}
 

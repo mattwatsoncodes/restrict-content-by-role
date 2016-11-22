@@ -24,6 +24,7 @@ class Options {
 		add_action( 'admin_init', array( $this, 'init_options_page' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'plugin_action_links_' . plugin_basename( MKDO_RCBR_ROOT ) , array( $this, 'add_setings_link' ) );
+		add_action( 'admin_init', array( $this, 'reset_roles' ) );
 	}
 
 	/**
@@ -49,6 +50,7 @@ class Options {
 		add_settings_section( 'mkdo_rcbr_removed_admin_roles_section', esc_html__( 'Admin Access Roles', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_removed_admin_roles_section_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_prevent_restricted_child', esc_html__( 'Prevent Restricted Content Child Pages', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_prevent_restricted_child_cb' ), 'mkdo_rcbr_settings' );
 		add_settings_section( 'mkdo_rcbr_default_restrict_message_section', esc_html__( 'Restrict Message', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_restrict_message_section_cb' ), 'mkdo_rcbr_settings' );
+		add_settings_section( 'mkdo_rcbr_reset_page_permissions', esc_html__( 'Reset Role Permissions', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_reset_page_permissions_cb' ), 'mkdo_rcbr_settings' );
 
     	// Add fields to a section
 		add_settings_field( 'mkdo_rcbr_post_types_select', esc_html__( 'Choose Public Post Types:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_post_types_select_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_post_types_section' );
@@ -60,6 +62,7 @@ class Options {
 		add_settings_field( 'mkdo_rcbr_default_restrict_message', esc_html__( 'Restriction Message:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_restrict_message_db' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 		add_settings_field( 'mkdo_rcbr_redirect_to_original', esc_html__( 'Redirect to Orignal:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_redirect_to_original_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
 		add_settings_field( 'mkdo_rcbr_default_redirect', esc_html__( 'Redirect URL:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_default_redirect_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_default_restrict_message_section' );
+		add_settings_field( 'mkdo_rcbr_reset_page_permission_buttons', esc_html__( 'Reset Roles:', MKDO_RCBR_TEXT_DOMAIN  ), array( $this, 'mkdo_rcbr_reset_page_permission_buttons_cb' ), 'mkdo_rcbr_settings', 'mkdo_rcbr_reset_page_permissions' );
 	}
 
 	/**
@@ -113,6 +116,15 @@ class Options {
 	public function mkdo_rcbr_default_restrict_message_section_cb() {
 		echo '<p>';
 		esc_html_e( 'Add the message that you wish to appear on the Login Page for restricted users. Or alternativly redirect the restricted user to a URL of your choice.', MKDO_RCBR_TEXT_DOMAIN  );
+		echo '</p>';
+	}
+
+	/**
+	 * Call back for the reset permissions
+	 */
+	public function mkdo_rcbr_reset_page_permissions_cb() {
+		echo '<p>';
+		esc_html_e( 'From time to time you may wish to remove all permissions set for a certain role. Use this section to chose the roles that you would like to reset.', MKDO_RCBR_TEXT_DOMAIN  );
 		echo '</p>';
 	}
 
@@ -172,6 +184,7 @@ class Options {
 					</label>
 				</li>
 			</ul>
+			<p class="description"><?php esc_html_e( 'If your menu is powered by a widget, this setting will not work.', MKDO_RCBR_TEXT_DOMAIN  ) ;?></p>
 		</div>
 
 		<?php
@@ -382,6 +395,38 @@ class Options {
 	}
 
 	/**
+	 * Reset permissions, permission list
+	 */
+	public function mkdo_rcbr_reset_page_permission_buttons_cb() {
+
+		global $wp_roles;
+
+		$nonce_key       = 'mkdo_rcbr_reset_roles_nonce';
+		$roles           = $wp_roles->roles;
+		$roles['public'] = array( 'name' => 'Public Access' );
+
+		?>
+		<div class="field field-checkbox field-reset-roles">
+			<ul class="field-input">
+				<?php
+				foreach ( $roles as $key => $role ) {
+					?>
+					<li>
+						<label>
+							<input type="checkbox" name="mkdo_rcbr_reset_roles[]" value="<?php echo $key; ?>" />
+							<?php _e( $role['name'] );?>
+						</label>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
+		<?php
+		wp_nonce_field( basename(__FILE__), $nonce_key );
+	}
+
+	/**
 	 * Add the options page
 	 */
 	public function add_options_page() {
@@ -410,5 +455,56 @@ class Options {
 	function add_setings_link( $links ) {
 		array_unshift( $links, '<a href="options-general.php?page=restrict_content_by_role">' . esc_html__( 'Settings', MKDO_RCBR_TEXT_DOMAIN ) . '</a>');
 		return $links;
+	}
+
+	/**
+	 * Reset page permissions for selected roles
+	 */
+	public function reset_roles() {
+		$nonce_key = 'mkdo_rcbr_reset_roles_nonce';
+
+		if ( isset( $_POST['mkdo_rcbr_reset_roles'] ) ) {
+			if ( ! empty( $_POST[ $nonce_key ] ) && wp_verify_nonce( $_POST[ $nonce_key ], basename( __FILE__ ) ) ) {
+				$post_types = get_post_types( $post_type_args );
+				unset( $post_types['attachment'] );
+
+				$posts = get_posts(
+					array(
+						'post_type'      => $post_types,
+						'posts_per_page' => -1,
+						'meta_query'     => array(
+							'relation' => 'OR',
+							array(
+								'key'     => '_mkdo_rcbr_roles',
+								'compare' => 'EXISTS',
+							),
+							array(
+								'key'     => '_mkdo_rcbr_admin_roles',
+								'compare' => 'EXISTS',
+							),
+						),
+					)
+				);
+
+				foreach ( $posts as $post ) {
+					$public_roles = get_post_meta( $post->ID, '_mkdo_rcbr_roles', true );
+					$admin_roles  = get_post_meta( $post->ID, '_mkdo_rcbr_admin_roles', true );
+
+					if ( is_array( $public_roles ) ) {
+						foreach ( $_POST['mkdo_rcbr_reset_roles'] as $role ) {
+							$public_roles[] = $role;
+						}
+						update_post_meta( $post->ID, '_mkdo_rcbr_roles', $public_roles );
+					}
+
+					if ( is_array( $admin_roles ) ) {
+						foreach ( $_POST['mkdo_rcbr_reset_roles'] as $role ) {
+							$admin_roles[] = $role;
+						}
+						update_post_meta( $post->ID, '_mkdo_rcbr_admin_roles', $admin_roles );
+					}
+				}
+			}
+		}
 	}
 }
