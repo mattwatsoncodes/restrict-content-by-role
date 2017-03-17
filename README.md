@@ -51,3 +51,4 @@ The plugin provides the following functionality:
 **3.5.0** - *22.11.2016* - Added ability to reset permissions for each role  
 **3.5.0** - *22.11.2016* - Fixed menu when not hiding  
 **3.5.0** - *22.11.2016* - Appended query string to redirect  
+**3.5.1** - *17.03.2017* - Added new artwork
