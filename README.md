@@ -2,6 +2,8 @@
 
 Restrict users with certain User Roles from accessing certain pieces of content and sub-content, both publicly and within the WordPress Dashboard (WP Admin).
 
+![Restrict Content by Role](https://github.com/mkdo/restrict-content-by-role/blob/master/assets/banner-1544x500.png?raw=true "Restrict Content by Role")
+
 ## About
 
 If you have a WordPress website with multiple users and several User Roles defined, and you wish to prevent certain User Roles from accessing certain pieces of content (and sub-content) both publicly and within `wp-admin`, then this plugin is for you.
