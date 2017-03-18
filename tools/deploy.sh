@@ -157,7 +157,6 @@ svn add --force $SVNPATH/assets/
 svn delete --force $SVNPATH/trunk/assets
 # We dont want all of our toys in the SVN repo, so lets remove them:
 echo "Deleting unwanted assets"
-svn delete --force $SVNPATH/trunk/examples
 svn delete --force $SVNPATH/trunk/tools
 svn delete --force $SVNPATH/trunk/.DS_Store
 
