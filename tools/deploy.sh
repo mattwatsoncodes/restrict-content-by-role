@@ -26,6 +26,7 @@ default_plugindir="$CURRENTDIR"
 default_mainfile="plugin.php"
 MAINFILE="plugin.php"
 SVNUSER="mwtsn"
+SVNPATH="/tmp/$PLUGINSLUG"
 
 # Get some user input
 # Can't use the -i flag for read, since that doesn't work for bash 3
@@ -157,6 +158,7 @@ svn add --force $SVNPATH/assets/
 svn delete --force $SVNPATH/trunk/assets
 # We dont want all of our toys in the SVN repo, so lets remove them:
 echo "Deleting unwanted assets"
+svn delete --force $SVNPATH/trunk/examples
 svn delete --force $SVNPATH/trunk/tools
 svn delete --force $SVNPATH/trunk/.DS_Store
 
