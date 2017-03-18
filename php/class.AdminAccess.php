@@ -250,10 +250,13 @@ class AdminAccess {
 		if( $mkdo_rcbr_prevent_restricted_child ) {
 
 		    $post = get_post();
-		    $old_parent = $post->post_parent;
+			$old_parent = null;
+			if ( is_object( $post ) ) {
+			    $old_parent = $post->post_parent;
+			}
 		    $new_parent = $data['post_parent'];
 
-		    if( $old_parent != $new_parent ) {
+		    if ( $old_parent != $new_parent ) {
 
 				$parent = get_post( $new_parent );
 

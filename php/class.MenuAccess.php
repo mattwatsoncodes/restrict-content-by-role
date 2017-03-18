@@ -41,7 +41,7 @@ class MenuAccess {
 
 			$object = get_post( $item->object_id );
 
-			if( 'nav_menu_item' !== $object->post_type ) {
+			if ( is_object( $object ) && 'nav_menu_item' !== $object->post_type ) {
 
 				$do_hide                        = false;
 				$has_access                     = false;

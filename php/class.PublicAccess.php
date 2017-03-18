@@ -142,13 +142,12 @@ class PublicAccess {
 
 			}
 
-			// If the user does not have access, redirect them
+			// If the user does not have access, redirect them.
 			if ( ! $has_access ) {
 
 				if ( ! empty( $mkdo_rcbr_custom_redirect ) ) {
 					$redirect_url = $mkdo_rcbr_custom_redirect;
 				}
-
 				wp_redirect( $redirect_url, 302 );
 				exit;
 			}
