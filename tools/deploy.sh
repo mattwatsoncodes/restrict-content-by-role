@@ -155,7 +155,7 @@ echo "Moving assets"
 mkdir -p $SVNPATH/assets/
 mv $SVNPATH/trunk/assets/raw/repository/* $SVNPATH/assets/
 svn add --force $SVNPATH/assets/
-svn delete --force $SVNPATH/trunk/assets
+svn delete --force $SVNPATH/trunk/assets/raw
 # We dont want all of our toys in the SVN repo, so lets remove them:
 echo "Deleting unwanted assets"
 svn delete --force $SVNPATH/trunk/examples

@@ -4,7 +4,7 @@ Donate link:
 Tags: restrict, lockdown, manage, content, user
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: 3.5.5
+Stable tag: 3.5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,5 +117,5 @@ If you are using this plugin in your project [we would love to hear about it](ma
 = 3.5.2 =
 * Bug fixes
 
-= 3.5.3 - 3.5.5 =
+= 3.5.3 - 3.5.6 =
 * Repair botched deploy
